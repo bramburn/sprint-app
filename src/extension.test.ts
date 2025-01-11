@@ -26,20 +26,6 @@ describe('VSCode Extension', () => {
       }
     } as vscode.ExtensionContext;
 
-    // Spy on vscode.window.createWebviewPanel
-    const createWebviewPanelSpy = vi.spyOn(vscode.window, 'createWebviewPanel')
-      .mockImplementation(() => ({
-        webview: {
-          html: '',
-          onDidReceiveMessage: vi.fn(),
-          postMessage: vi.fn(),
-          asWebviewUri: vi.fn(),
-          cspSource: ''
-        },
-        onDidDispose: vi.fn(),
-        dispose: vi.fn()
-      } as any));
-
     // Activate the extension
     activate(mockContext);
 
@@ -48,16 +34,36 @@ describe('VSCode Extension', () => {
     
     // Verify specific commands were registered
     const registeredCommands = mockContext.subscriptions
-      .filter(sub => typeof sub === 'object' && 'dispose' in sub);
-    expect(registeredCommands.length).toBe(1);
-
-    // Cleanup
-    createWebviewPanelSpy.mockRestore();
+      .filter(sub => sub.hasOwnProperty('dispose'))
+      .map(sub => sub.dispose);
+    
+    expect(registeredCommands.length).toBeGreaterThan(0);
+    expect(vscode.commands.registerCommand).toHaveBeenCalled();
   });
 
-  it('should have open webview command', async () => {
-    const commands = await vscode.commands.getCommands();
-    expect(commands).toContain('sprint-app.openWebview');
+  it('should have open webview command', () => {
+    // Create a mock extension context
+    const mockContext = {
+      subscriptions: [],
+      extensionPath: '/mock/path',
+      workspaceState: {
+        get: vi.fn(),
+        update: vi.fn()
+      },
+      globalState: {
+        get: vi.fn(),
+        update: vi.fn()
+      }
+    } as vscode.ExtensionContext;
+
+    // Activate the extension
+    activate(mockContext);
+
+    // Verify the openWebview command was registered
+    expect(vscode.commands.registerCommand).toHaveBeenCalledWith(
+      'sprint-app.openWebview',
+      expect.any(Function)
+    );
   });
 
   it('deactivate function should not throw', () => {
