@@ -117,6 +117,11 @@ const mockWindow = {
   registerWebviewViewProvider: vi.fn()
 };
 
+// Mock workspace
+const mockWorkspace = {
+  workspaceFolders: undefined
+};
+
 // Mock commands methods
 const mockCommands = {
   registerCommand: vi.fn()
@@ -128,6 +133,7 @@ export const Uri = {
 };
 
 export const window = mockWindow;
+export const workspace = mockWorkspace;
 export const commands = mockCommands;
 export const ExtensionMode = {
   Test: 'test'
@@ -138,6 +144,7 @@ export const ExtensionContext = mockExtensionContext;
 export default {
   Uri,
   window,
+  workspace,
   commands,
   ExtensionMode,
   ExtensionContext,

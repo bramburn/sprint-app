@@ -3,6 +3,7 @@ import * as assert from 'assert';
 import * as vscode from 'vscode';
 import { activate } from '../extension';
 import { SidebarProvider } from '../SidebarProvider';
+import { vi } from 'vitest';
 
 const mockExtensionContext: vscode.ExtensionContext = {
     subscriptions: [],
@@ -92,12 +93,43 @@ const mockExtensionContext: vscode.ExtensionContext = {
 };
 
 describe('Sprint App Extension Test Suite', () => {
-    it('Extension should activate', () => {
+    let showErrorMessageSpy: any;
+
+    beforeEach(() => {
+        // Reset workspace folders before each test
+        (vscode.workspace as any).workspaceFolders = undefined;
+        // Spy on showErrorMessage
+        showErrorMessageSpy = vi.spyOn(vscode.window, 'showErrorMessage');
+    });
+
+    afterEach(() => {
+        showErrorMessageSpy.mockRestore();
+    });
+
+    it('Extension should activate with valid workspace', () => {
+        // Mock workspace folders
+        (vscode.workspace as any).workspaceFolders = [{ uri: { path: '/test/workspace' } }];
+
         // Activate the extension
         activate(mockExtensionContext);
 
         // Check that subscriptions were added
         assert.strictEqual(mockExtensionContext.subscriptions.length > 0, true, 'No subscriptions were added during activation');
+        // Verify error message was not shown
+        expect(showErrorMessageSpy).not.toHaveBeenCalled();
+    });
+
+    it('Extension should show error and not activate without workspace', () => {
+        // Mock empty workspace folders
+        (vscode.workspace as any).workspaceFolders = undefined;
+
+        // Activate the extension
+        activate(mockExtensionContext);
+
+        // Check that no subscriptions were added
+        assert.strictEqual(mockExtensionContext.subscriptions.length, 0, 'Subscriptions were added despite no workspace');
+        // Verify error message was shown
+        expect(showErrorMessageSpy).toHaveBeenCalledWith('No workspace folder found. Please open a folder or workspace to use this extension.');
     });
 
     it('Sidebar view registration', () => {
@@ -106,4 +138,35 @@ describe('Sprint App Extension Test Suite', () => {
         // Verify static properties
         assert.strictEqual(SidebarProvider.viewId, 'sprint-sidebar-view', 'Incorrect sidebar view ID');
     });
+});
+
+describe('Sprint App Extension', () => {
+  it('should activate the extension', async () => {
+    const extension = vscode.extensions.getExtension('sprint-app');
+    expect(extension).toBeTruthy();
+
+    await extension?.activate();
+    expect(extension?.isActive).toBeTruthy();
+  });
+
+  it('should register sidebar view provider', async () => {
+    const extension = vscode.extensions.getExtension('sprint-app');
+    await extension?.activate();
+
+    const viewContainer = vscode.window.createTreeView('sprint-sidebar-view', { 
+      treeDataProvider: {
+        getTreeItem: () => ({ label: 'Test Item' }),
+        getChildren: () => []
+      }
+    });
+
+    expect(viewContainer).toBeTruthy();
+  });
+
+  it('should have correct sidebar configuration', () => {
+    const packageJson = require('../../package.json');
+    
+    expect(packageJson.contributes.viewsContainers.activitybar[0].id).toBe('sprint-sidebar');
+    expect(packageJson.contributes.views.activitybar[0].id).toBe('sprint-sidebar-view');
+  });
 });

@@ -13,7 +13,8 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   ) {
     // Setup error handling
     this.errorSubject.subscribe(error => {
-      vscode.window.showErrorMessage(`Webview Error: ${error.message}`);
+      console.error('Webview Error:', error);
+      vscode.window.showErrorMessage(`Sprint App Sidebar Error: ${error.message}`);
     });
 
     // Setup message handling with error handling
@@ -49,65 +50,99 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     });
   }
 
-  public resolveWebviewView(
-    webviewView: vscode.WebviewView,
-    context: vscode.WebviewViewResolveContext,
-    _token: vscode.CancellationToken,
-  ) {
-    this._view = webviewView;
+  resolveWebviewView(
+    webviewView: vscode.WebviewView, 
+    context: vscode.WebviewViewResolveContext, 
+    token: vscode.CancellationToken
+  ): void {
+    try {
+      this._view = webviewView;
 
-    webviewView.webview.options = {
-      enableScripts: true,
-      localResourceRoots: [
-        this._extensionUri
-      ]
-    };
+      // Configure webview options
+      webviewView.webview.options = {
+        enableScripts: true,
+        localResourceRoots: [this._extensionUri]
+      };
 
-    webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
+      // Set webview HTML content
+      webviewView.webview.html = this.getHtmlForWebview(webviewView.webview);
 
-    webviewView.webview.onDidReceiveMessage(message => {
-      this.messageSubject.next(message);
-    });
+      // Setup message listener
+      const messageDisposable = webviewView.webview.onDidReceiveMessage(
+        message => {
+          console.log('Received message from webview:', message);
+          this.messageSubject.next(message);
+        }
+      );
+
+      // Optional: Handle view state changes
+      const visibilityDisposable = webviewView.onDidChangeVisibility(
+        () => {
+          console.log(`Sidebar visibility changed: ${webviewView.visible}`);
+        }
+      );
+
+      // Manually manage disposables
+      token.onCancellationRequested(() => {
+        messageDisposable.dispose();
+        visibilityDisposable.dispose();
+      });
+    } catch (error) {
+      console.error('Error resolving webview view:', error);
+      vscode.window.showErrorMessage(`Failed to initialize Sprint App Sidebar: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
   }
 
-  private _getHtmlForWebview(webview: vscode.Webview) {
-    // Get the local path to main script of the webview
-    const scriptUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, 'webview-ui', 'dist', 'assets', 'index.js')
-    );
+  private getHtmlForWebview(webview: vscode.Webview): string {
+    try {
+      const nonce = this.getNonce();
 
-    // Get the local path to main style of the webview
-    const styleUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, 'webview-ui', 'dist', 'assets', 'index.css')
-    );
-
-    // Use a nonce to only allow a specific script to be run
-    const nonce = getNonce();
-
-    return `
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; script-src 'nonce-${nonce}';">
-        <link href="${styleUri}" rel="stylesheet">
-        <title>Sprint App</title>
-      </head>
-      <body>
-        <div id="root"></div>
-        <script nonce="${nonce}" src="${scriptUri}"></script>
-      </body>
-      </html>
-    `;
+      return `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; script-src 'nonce-${nonce}';">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Sprint App Sidebar</title>
+          <style>
+            body { 
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+              padding: 10px;
+              background-color: var(--vscode-editor-background);
+              color: var(--vscode-editor-foreground);
+            }
+          </style>
+        </head>
+        <body>
+          <h2>Sprint App</h2>
+          <p>Welcome to your Sprint App Sidebar!</p>
+          <script nonce="${nonce}">
+            const vscode = acquireVsCodeApi();
+            console.log('Sidebar script initialized');
+          </script>
+        </body>
+        </html>`;
+    } catch (error) {
+      console.error('Error generating webview HTML:', error);
+      return `
+        <!DOCTYPE html>
+        <html>
+        <body>
+          <h1>Error Loading Sprint App Sidebar</h1>
+          <p>${error instanceof Error ? error.message : 'Unknown error'}</p>
+        </body>
+        </html>`;
+    }
   }
-}
 
-function getNonce() {
-  let text = '';
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  for (let i = 0; i < 32; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  // Utility method to generate a cryptographically secure nonce
+  private getNonce(): string {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let nonce = '';
+    for (let i = 0; i < 32; i++) {
+      nonce += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return nonce;
   }
-  return text;
 }

@@ -14,11 +14,6 @@ export default defineConfig({
     },
     resolveSnapshotPath: (testPath, snapExtension) => {
       return testPath + snapExtension;
-    },
-    resolve: {
-      alias: {
-        '@': path.resolve(__dirname, './src')
-      }
     }
   }
 });

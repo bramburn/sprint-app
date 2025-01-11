@@ -2,7 +2,6 @@
   "name": "sprint-app",
   "displayName": "Sprint App",
   "version": "0.0.1",
-  "type": "module",
   "description": "Sprint App VSCode Extension",
   "engines": {
     "vscode": "^1.74.0"
@@ -11,8 +10,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onView:sprint-sidebar-view",
-    "onCommand:sprint-ai.helloWorld"
+    "onStartupFinished",
+    "onView:sprint-sidebar-view"
   ],
   "main": "out/extension.js",
   "contributes": {
@@ -26,7 +25,7 @@
       ]
     },
     "views": {
-      "sprint-sidebar": [
+      "activitybar": [
         {
           "type": "webview",
           "id": "sprint-sidebar-view",
@@ -83,7 +82,7 @@
     "standard-version": "^9.5.0",
     "typescript": "^5.3.2",
     "vite": "^5.0.6",
-    "vitest": "^1.1.0"
+    "vitest": "^1.4.0"
   },
   "dependencies": {
     "@vscode/webview-ui-toolkit": "^1.4.0",
