@@ -19,6 +19,7 @@
 		".vscode",
 		"out",
 		"coverage",
-		"webview-ui"
+		"webview-ui",
+		"vite.config.ts"
 	]
 }
