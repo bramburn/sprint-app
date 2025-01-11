@@ -4,6 +4,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { Subject } from 'rxjs';
 import { WebviewMessage, ExtensionMessage } from '@shared/messages';
+import { SprintAppSidebarProvider } from './views/sidebarProvider';
 
 // Type guard to check if payload has text
 function isUserInputMessage(message: WebviewMessage): message is WebviewMessage & { payload: { text: string } } {
@@ -21,6 +22,15 @@ export function activate(context: vscode.ExtensionContext) {
     // Use the console to output diagnostic information (console.log) and errors (console.error)
     // This line of code will only be executed once when your extension is activated
     console.log('Sprint App extension is now active!');
+
+    // Register Sidebar Provider
+    const sidebarProvider = new SprintAppSidebarProvider(context.extensionUri);
+    context.subscriptions.push(
+        vscode.window.registerWebviewViewProvider(
+            SprintAppSidebarProvider.viewType,
+            sidebarProvider
+        )
+    );
 
     // Create a message subject for handling webview communications
     const messageSubject = new Subject<WebviewMessage>();

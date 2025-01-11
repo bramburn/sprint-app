@@ -25,7 +25,15 @@ export default defineConfig({
         'dist/**',
         'src/tests/**'
       ]
-    }
+    },
+    poolOptions: {
+      threads: {
+        singleThread: true,
+      },
+      forks: {
+        singleFork: true,
+      },
+    },
   },
   resolve: {
     alias: {

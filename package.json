@@ -18,6 +18,25 @@
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "sprint-app-sidebar",
+          "title": "Sprint App",
+          "icon": "assets/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "sprint-app-sidebar": [
+        {
+          "type": "webview",
+          "id": "sprint-app-sidebar",
+          "name": "Sprint App",
+          "icon": "assets/icon.svg"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "sprint-app.helloWorld",
