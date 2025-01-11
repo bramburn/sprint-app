@@ -15,7 +15,9 @@
 	},
 	"exclude": [
 		"node_modules",
+		"dist",
+		".vscode",
 		"out",
-		"webview-ui"
+		"coverage"
 	]
 }

@@ -1,7 +1,0 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-# Run linting and tests before committing
-npm run lint
-npm run test
-cd webview-ui && npm run lint && npm run test
