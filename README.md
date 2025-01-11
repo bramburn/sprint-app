@@ -1,71 +1,74 @@
-# sprint-ai README
+# Sprint App VSCode Extension
 
-This is the README for your extension "sprint-ai". After writing up a brief description, we recommend including the following sections.
+A powerful VSCode extension with an interactive sidebar and webview UI.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- Custom sidebar integration
+- React-based webview UI
+- RxJS message handling
+- Vitest for testing
 
-For example if there is an image subfolder under your extension project workspace:
+## Project Structure
 
-\!\[feature X\]\(images/feature-x.png\)
+```
+sprint-app/
+├── src/                # Extension source code
+│   ├── extension.ts    # Main extension entry point
+│   └── SidebarProvider.ts  # Sidebar webview provider
+├── webview-ui/         # React webview application
+│   ├── src/
+│   │   ├── App.tsx     # Main React component
+│   │   └── main.tsx    # React entry point
+│   └── vite.config.ts  # Vite configuration
+└── media/              # Extension assets
+    └── icon.svg        # Sidebar icon
+```
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## Development Setup
 
-## Requirements
+### Prerequisites
+- Node.js 18.x
+- npm 9.x
+- VSCode 1.74.0+
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+### Installation
 
-## Extension Settings
+1. Clone the repository
+2. Run `npm install` in the root directory
+3. Run `cd webview-ui && npm install`
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+### Running the Extension
 
-For example:
+- `npm run watch`: Watch and compile both extension and webview
+- `npm run watch:extension`: Watch only extension code
+- `npm run watch:webview`: Watch only webview code
 
-This extension contributes the following settings:
+### Testing
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+- `npm test`: Run tests for extension
+- `cd webview-ui && npm test`: Run tests for webview
 
-## Known Issues
+## Key Technologies
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+- TypeScript
+- React
+- VSCode Webview API
+- RxJS
+- Vite
+- Vitest
 
-## Release Notes
+## Debugging
 
-Users appreciate release notes as you update your extension.
+1. Open the project in VSCode
+2. Go to the Run and Debug view
+3. Select "Run Extension" configuration
+4. Press F5 to start debugging
 
-### 1.0.0
+## Contributing
 
-Initial release of ...
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
 
-### 1.0.1
+## License
 
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
