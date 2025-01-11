@@ -12,6 +12,10 @@ function App() {
     }
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputText(e.target.value);
+  };
+
   return (
     <div className="App p-4 max-w-md mx-auto">
       <header className="App-header mb-6">
@@ -20,7 +24,7 @@ function App() {
         <div className="flex space-x-2 mb-4">
           <VSCodeTextField 
             value={inputText}
-            onInput={(e: Event) => setInputText((e.target as HTMLInputElement).value)}
+            onChange={handleInputChange}
             placeholder="Enter a message"
             className="flex-grow"
           />

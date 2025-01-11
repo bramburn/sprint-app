@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Message } from '@shared/messages';
+import { Message, ExtensionMessage, WebviewMessage } from '@shared/messages';
 
 const vscode: ReturnType<typeof acquireVsCodeApi> = acquireVsCodeApi();
 
@@ -12,13 +12,14 @@ export function useMessages() {
     const handleMessage = (event: MessageEvent) => {
       const message: Message = event.data;
       
-      if (message.error) {
+      // Type guard to check if it's an ExtensionMessage with an error
+      if ('error' in message && message.error) {
         setError(message.error);
         setIsLoading(false);
         return;
       }
 
-      setResponse(message.payload as Message);
+      setResponse(message);
       setIsLoading(false);
     };
 

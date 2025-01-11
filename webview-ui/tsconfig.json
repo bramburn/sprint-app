@@ -8,8 +8,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
     "jsx": "react-jsx",
     "strict": true,
     "noUnusedLocals": false,
@@ -20,16 +18,15 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "types": ["vitest/globals", "@testing-library/jest-dom"],
-    "baseUrl": "../",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["webview-ui/src/*"],
-      "@shared/*": ["src/shared/*"]
-    },
-    "composite": true
+      "@/*": ["src/*"],
+      "@shared/*": ["../src/shared/*"]
+    }
   },
   "include": [
-    "src",
-    "../shared"
+    "src/**/*",
+    "../src/shared/**/*"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
