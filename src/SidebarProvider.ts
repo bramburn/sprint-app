@@ -34,14 +34,17 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         }
       }),
       catchError((error, caught) => {
-        this.errorSubject.next(error);
+        this.errorSubject.next(error as Error);
         return caught;
       })
     ).subscribe(msg => {
       if (this._view) {
-        this._view.webview.postMessage(msg).catch(error => {
-          this.errorSubject.next(error);
-        });
+        this._view.webview.postMessage(msg).then(
+          () => {},
+          (error: Error) => {
+            this.errorSubject.next(error);
+          }
+        );
       }
     });
   }

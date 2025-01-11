@@ -18,6 +18,7 @@
 		"dist",
 		".vscode",
 		"out",
-		"coverage"
+		"coverage",
+		"webview-ui"
 	]
 }
