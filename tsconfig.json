@@ -1,45 +1,27 @@
 {
 	"compilerOptions": {
-		"module": "CommonJS",
+		"module": "ESNext",
 		"target": "ES2022",
 		"lib": [
-			"ES2022"
+			"ES2022",
+			"DOM"
 		],
+		"strict": true,
 		"sourceMap": true,
+		"outDir": "dist",
 		"rootDir": "src",
-		"outDir": "./out",
-		"strict": true, /* enable all strict type-checking options */
+		"moduleResolution": "node",
 		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"forceConsistentCasingInFileNames": true,
 		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true
+		"resolveJsonModule": true
 	},
+	"include": [
+		"src/**/*"
+	],
 	"exclude": [
 		"node_modules",
-		"dist",
-		".vscode",
-		"out",
-		"coverage",
-		"webview-ui",
-		"**/__mocks__",
-
-		"vite.config.ts",
-		"**/*.test.ts", // Exclude all test files ending with .test.ts
-		"**/*.spec.ts", // Exclude all test files ending with .spec.ts
-		"src/test" // Exclude the entire test directory (if applicable)
-	],
-	"overrides": [
-		{
-			"files": [
-				"**/test/**/*.test.ts"
-			],
-			"compilerOptions": {
-				"strict": false,
-				"noImplicitAny": false,
-				"strictNullChecks": false,
-				"strictFunctionTypes": false,
-				"strictBindCallApply": false,
-				"strictPropertyInitialization": false
-			}
-		}
+		"**/*.test.ts"
 	]
 }

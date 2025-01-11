@@ -1,6 +1,6 @@
 // The module 'vscode' contains the VS Code extensibility API
 import * as vscode from 'vscode';
-import { SidebarProvider } from './SidebarProvider';
+import { SidebarProvider } from './SidebarProvider.mjs';
 
 // This method is called when your extension is activated
 export async function activate(context: vscode.ExtensionContext) {
@@ -63,3 +63,9 @@ export async function activate(context: vscode.ExtensionContext) {
 export function deactivate() {
     console.log('Sprint App extension is now deactivated');
 }
+
+// Export the module
+export default {
+    activate,
+    deactivate
+};

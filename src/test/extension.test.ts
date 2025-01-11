@@ -1,125 +1,63 @@
 // @ts-nocheck
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { activate } from '../extension';
-import { SidebarProvider } from '../SidebarProvider';
+import * as extension from '../extension.mjs';
+import { SidebarProvider } from '../SidebarProvider.mjs';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 
-// Mock vscode module
-vi.mock('vscode', () => {
-  const mockExtensions = {
-    getExtension: vi.fn()
-  };
+// Create a mock implementation of vscode
+const mockVscode = {
+  EventEmitter: class EventEmitter {
+    private listeners: Array<(e: any) => void> = [];
 
-  const mockWorkspace = {
+    event = (listener: (e: any) => void) => {
+      this.listeners.push(listener);
+      return {
+        dispose: () => {
+          const index = this.listeners.indexOf(listener);
+          if (index !== -1) {
+            this.listeners.splice(index, 1);
+          }
+        }
+      };
+    }
+
+    fire = (event: any) => {
+      this.listeners.forEach(listener => listener(event));
+    }
+  },
+  workspace: {
     workspaceFolders: [{ uri: 'file:///test/workspace' }]
-  };
-
-  const mockWindow = {
+  },
+  window: {
     showErrorMessage: vi.fn(),
-    createTreeView: vi.fn()
-  };
+    showInformationMessage: vi.fn(),
+    createTreeView: vi.fn(),
+    registerWebviewViewProvider: vi.fn()
+  },
+  commands: {
+    registerCommand: vi.fn(),
+    executeCommand: vi.fn()
+  },
+  Uri: {
+    file: (path: string) => ({ path }),
+    parse: (uri: string) => ({ path: uri })
+  },
+  ExtensionMode: {
+    Development: 'development',
+    Production: 'production',
+    Test: 'test'
+  }
+};
 
+// Mock the vscode module
+vi.mock('vscode', () => {
   return {
-    extensions: mockExtensions,
-    workspace: mockWorkspace,
-    window: mockWindow,
-    commands: {
-      registerCommand: vi.fn(),
-      executeCommand: vi.fn()
-    },
-    WebviewView: class {},
-    WebviewViewProvider: class {},
-    CancellationToken: class {}
+    __esModule: true,
+    default: mockVscode,
+    ...mockVscode
   };
 });
-
-const mockExtensionContext: vscode.ExtensionContext = {
-    subscriptions: [],
-    extensionUri: {
-        path: "/mock/extension/path",
-        scheme: "file",
-        authority: "",
-        query: "",
-        fragment: "",
-        fsPath: "/mock/extension/path",
-        with: () => mockExtensionContext.extensionUri,
-        toString: () => "/mock/extension/path",
-        toJSON: () => "/mock/extension/path"
-    } as vscode.Uri,
-    storageUri: {
-        path: "/mock/storage/path",
-        scheme: "file",
-        authority: "",
-        query: "",
-        fragment: "",
-        fsPath: "/mock/storage/path",
-        with: () => mockExtensionContext.storageUri!,
-        toString: () => "/mock/storage/path",
-        toJSON: () => "/mock/storage/path"
-    } as vscode.Uri,
-    globalStorageUri: {
-        path: "/mock/global/storage/path",
-        scheme: "file",
-        authority: "",
-        query: "",
-        fragment: "",
-        fsPath: "/mock/global/storage/path",
-        with: () => mockExtensionContext.globalStorageUri!,
-        toString: () => "/mock/global/storage/path",
-        toJSON: () => "/mock/global/storage/path"
-    } as vscode.Uri,
-    logUri: {
-        path: "/mock/log/path",
-        scheme: "file",
-        authority: "",
-        query: "",
-        fragment: "",
-        fsPath: "/mock/log/path",
-        with: () => mockExtensionContext.logUri!,
-        toString: () => "/mock/log/path",
-        toJSON: () => "/mock/log/path"
-    } as vscode.Uri,
-    extensionMode: vscode.ExtensionMode.Test,
-    environmentVariableCollection: {
-        replace: () => {},
-        persistent: true,
-        description: "Mock Environment Variables",
-        getScoped: (scope: vscode.EnvironmentVariableScope) => ({}),
-        append: () => {},
-        forEach: () => {},
-        get: () => undefined,
-        delete: () => {}
-    } as vscode.GlobalEnvironmentVariableCollection,
-    secrets: {
-        get: () => Promise.resolve(undefined),
-        store: () => Promise.resolve(),
-        delete: () => Promise.resolve(),
-        onDidChange: new vscode.EventEmitter<vscode.SecretStorageChangeEvent>().event
-    },
-    workspaceState: {
-        get: () => undefined,
-        update: () => Promise.resolve(),
-        keys: () => [],
-        setKeysForSync: (keys: readonly string[]) => {}
-    } as vscode.Memento & { setKeysForSync(keys: readonly string[]): void },
-    globalState: {
-        get: () => undefined,
-        update: () => Promise.resolve(),
-        keys: () => [],
-        setKeysForSync: (keys: readonly string[]) => {}
-    } as vscode.Memento & { setKeysForSync(keys: readonly string[]): void },
-    extensionPath: "/mock/extension/path",
-    asAbsolutePath: (relativePath: string) => `/mock/extension/path/${relativePath}`,
-    storagePath: "/mock/storage/path",
-    globalStoragePath: "/mock/global/storage/path",
-    logPath: "/mock/log/path",
-    extension: {} as vscode.Extension<any>,
-    languageModelAccessInformation: {
-        onDidChange: new vscode.EventEmitter<any>().event,
-        canSendRequest: (chat: vscode.LanguageModelChat) => undefined
-    }
-};
 
 describe('Sprint App Extension Test Suite', () => {
   beforeEach(() => {
@@ -129,10 +67,10 @@ describe('Sprint App Extension Test Suite', () => {
   it('Extension should activate with valid workspace', async () => {
     const context = {
       subscriptions: [],
-      extensionUri: vscode.Uri.parse('file:///test/extension')
+      extensionUri: vscode.Uri.file('/test/extension')
     };
 
-    activate(context as any);
+    extension.activate(context as any);
 
     expect(context.subscriptions.length).toBeGreaterThan(0);
     expect(vscode.window.showErrorMessage).not.toHaveBeenCalled();
@@ -144,10 +82,10 @@ describe('Sprint App Extension Test Suite', () => {
 
     const context = {
       subscriptions: [],
-      extensionUri: vscode.Uri.parse('file:///test/extension')
+      extensionUri: vscode.Uri.file('/test/extension')
     };
 
-    activate(context as any);
+    extension.activate(context as any);
 
     expect(context.subscriptions.length).toBe(0);
     expect(vscode.window.showErrorMessage).toHaveBeenCalledWith(
@@ -167,14 +105,19 @@ describe('Sprint App Extension', () => {
   it('should register sidebar view provider', async () => {
     const context = {
       subscriptions: [],
-      extensionUri: vscode.Uri.parse('file:///test/extension')
+      extensionUri: vscode.Uri.file('/test/extension')
     };
 
-    activate(context as any);
+    extension.activate(context as any);
 
-    expect(vscode.window.createTreeView).toHaveBeenCalledWith(
+    expect(vscode.window.registerWebviewViewProvider).toHaveBeenCalledWith(
       'sprint-sidebar-view', 
-      expect.anything()
+      expect.anything(),
+      expect.objectContaining({
+        webviewOptions: {
+          retainContextWhenHidden: true
+        }
+      })
     );
   });
 
@@ -182,6 +125,6 @@ describe('Sprint App Extension', () => {
     const packageJson = require('../../package.json');
     
     expect(packageJson.contributes.viewsContainers.activitybar[0].id).toBe('sprint-sidebar');
-    expect(packageJson.contributes.views.activitybar[0].id).toBe('sprint-sidebar-view');
+    expect(packageJson.contributes.views['sprint-sidebar'][0].id).toBe('sprint-sidebar-view');
   });
 });

@@ -2,9 +2,22 @@
   "name": "sprint-app",
   "displayName": "Sprint App",
   "version": "0.0.1",
+  "publisher": "sprint-ai",
   "description": "Sprint App VSCode Extension",
   "engines": {
     "vscode": "^1.74.0"
+  },
+  "scripts": {
+    "clean": "node --max-old-space-size=4096 -e \"const fs = require('fs'); if (fs.existsSync('dist')) fs.rmSync('dist', { recursive: true });\"",
+    "prebuild": "npm run clean",
+    "build": "npm run build:cjs",
+    "build:esm": "node esbuild.cjs",
+    "build:cjs": "node esbuild.cjs --cjs",
+    "pretest": "npm run build:esm",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "vscode:prepublish": "npm run build:cjs",
+    "watch": "node esbuild.cjs --watch"
   },
   "categories": [
     "Other"
@@ -13,7 +26,7 @@
     "onStartupFinished",
     "onView:sprint-sidebar-view"
   ],
-  "main": "out/extension.js",
+  "main": "./dist/extension.cjs",
   "contributes": {
     "viewsContainers": {
       "activitybar": [
@@ -25,7 +38,7 @@
       ]
     },
     "views": {
-      "activitybar": [
+      "sprint-sidebar": [
         {
           "type": "webview",
           "id": "sprint-sidebar-view",
@@ -38,28 +51,12 @@
       {
         "command": "sprint-ai.helloWorld",
         "title": "Hello World"
+      },
+      {
+        "command": "sprint-ai.showSidebar",
+        "title": "Show Sprint App Sidebar"
       }
     ]
-  },
-  "scripts": {
-    "clean": "node --max-old-space-size=4096 -e \"const fs = require('fs'); if (fs.existsSync('out')) fs.rmSync('out', { recursive: true });\"",
-    "prebuild": "npm run clean",
-    "build": "node --max-old-space-size=4096 node_modules/typescript/lib/tsc.js --project ./tsconfig.json",
-    "build:watch": "node --max-old-space-size=4096 tsc --watch --project ./tsconfig.json",
-    "vscode:prepublish": "npm run build && npm run build:webview",
-    "compile": "node --max-old-space-size=4096 tsc -p ./",
-    "watch": "concurrently \"npm:watch:extension\" \"npm:watch:webview\"",
-    "watch:extension": "node --max-old-space-size=4096 tsc -watch -p ./",
-    "watch:webview": "cd webview-ui && npm run dev",
-    "pretest": "npm run build",
-    "lint": "eslint src --ext ts,tsx",
-    "lint:fix": "eslint src --ext ts,tsx --fix",
-    "test": "vitest run --passWithNoTests",
-    "test:watch": "node --max-old-space-size=4096 vitest watch",
-    "test:ui": "node --max-old-space-size=4096 vitest --ui",
-    "test:coverage": "node --max-old-space-size=4096 vitest run --coverage",
-    "build:extension": "npm run compile",
-    "build:webview": "cd webview-ui && npm run build"
   },
   "keywords": [],
   "author": "",
