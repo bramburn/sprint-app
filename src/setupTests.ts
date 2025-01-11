@@ -1,6 +1,6 @@
-// src/setupTests.ts
+// @ts-nocheck
 import { vi } from 'vitest';
-
+import {beforeEach } from 'v8';
 // Comprehensive mock of VS Code API
 vi.mock('vscode', () => ({
     // Workspace mocks

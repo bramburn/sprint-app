@@ -1,0 +1,2 @@
+./ contains npm package and containts ./src for the vscode extension
+./webview-ui contains npm package and containts ./src for the webview
