@@ -3,3 +3,19 @@ dist
 node_modules
 .vscode-test/
 *.vsix
+.cursorrules
+
+# Vitest and coverage
+coverage/
+*.coverage
+.nyc_output/
+
+# Node modules
+node_modules/
+
+# Build output
+out/
+dist/
+
+# Logs
+*.log

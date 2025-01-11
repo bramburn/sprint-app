@@ -12,3 +12,11 @@ vsc-extension-quickstart.md
 **/*.map
 **/*.ts
 **/.vscode-test.*
+
+# Vitest and testing
+coverage/
+src/test/
+*.test.ts
+*.spec.ts
+.vscode/
+vitest.config.ts
