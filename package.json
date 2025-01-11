@@ -9,7 +9,10 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onView:sprint-sidebar-view",
+    "onCommand:sprint-ai.helloWorld"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "viewsContainers": {
@@ -39,16 +42,20 @@
     ]
   },
   "scripts": {
-    "prepare": "husky install",
-    "vscode:prepublish": "npm run compile && npm run build:webview",
+    "clean": "rimraf out",
+    "prebuild": "npm run clean",
+    "build": "tsc --project ./tsconfig.json",
+    "build:watch": "tsc --watch --project ./tsconfig.json",
+    "vscode:prepublish": "npm run build && npm run build:webview",
     "compile": "tsc -p ./",
     "watch": "concurrently \"npm:watch:extension\" \"npm:watch:webview\"",
     "watch:extension": "tsc -watch -p ./",
     "watch:webview": "cd webview-ui && npm run dev",
-    "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts,tsx",
-    "lint:fix": "eslint src --ext ts,tsx --fix",
-    "test": "vitest",
+    "pretest": "npm run build && npm run lint",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
     "build:extension": "npm run compile",
@@ -60,27 +67,27 @@
     "release:patch": "standard-version --release-as patch"
   },
   "devDependencies": {
-    "@types/node": "^18.x",
-    "@types/vscode": "^1.74.0",
-    "@typescript-eslint/eslint-plugin": "^5.59.1",
-    "@typescript-eslint/parser": "^5.59.1",
-    "concurrently": "^8.2.0",
-    "esbuild": "^0.24.0",
-    "eslint": "^8.39.0",
-    "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-vitest": "^0.3.10",
-    "husky": "^8.0.3",
-    "lint-staged": "^15.1.0",
+    "@types/node": "^22.x",
+    "@types/vscode": "^1.96.0",
+    "@typescript-eslint/eslint-plugin": "^8.19.1",
+    "@typescript-eslint/parser": "^8.19.1",
+    "concurrently": "^9.1.2",
+    "esbuild": "^0.24.2",
+    "eslint": "^8.57.1",
+    "eslint-plugin-react": "^7.37.3",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-vitest": "^0.5.4",
+    "lint-staged": "^15.3.0",
     "npm-run-all": "^4.1.5",
+    "rimraf": "^6.0.1",
     "standard-version": "^9.5.0",
-    "typescript": "^5.0.4",
-    "vitest": "^0.34.6",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1"
   },
   "dependencies": {
-    "@vscode/webview-ui-toolkit": "^1.2.2",
+    "@vscode/webview-ui-toolkit": "^1.4.0",
     "rxjs": "^7.8.1"
   },
   "lint-staged": {

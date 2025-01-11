@@ -1,6 +1,7 @@
 import { performance } from 'perf_hooks';
 import * as vscode from 'vscode';
 import { SidebarProvider } from '../SidebarProvider';
+import { expect } from 'vitest';
 
 describe('Performance Tests', () => {
   it('Sidebar webview should load within 500ms', async () => {
@@ -52,9 +53,9 @@ describe('Performance Tests', () => {
     const endTime = performance.now();
     const processingTime = endTime - startTime;
 
-    console.log(`${iterations} message passes took ${processingTime}ms`);
+    console.log(`Message passing time for ${iterations} iterations: ${processingTime}ms`);
     
-    // Assert average message processing is quick
-    expect(processingTime / iterations).toBeLessThan(5);
+    // Assert that message passing takes less than 50ms per 100 iterations
+    expect(processingTime).toBeLessThan(50);
   });
 });
