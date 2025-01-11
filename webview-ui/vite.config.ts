@@ -1,5 +1,21 @@
-import { defineConfig } from 'vite';
+import { defineConfig, UserConfigExport } from 'vite';
 import react from '@vitejs/plugin-react';
+
+interface ExtendedUserConfig extends UserConfigExport {
+  test?: {
+    globals?: boolean;
+    environment?: string;
+    setupFiles?: string[];
+    coverage?: {
+      provider?: string;
+      reporter?: string[];
+      reportsDirectory?: string;
+      all?: boolean;
+      include?: string[];
+      exclude?: string[];
+    };
+  };
+}
 
 export default defineConfig({
   plugins: [react()],
@@ -20,7 +36,7 @@ export default defineConfig({
         'src/tests/**/*'
       ],
     },
-  },
+  } as ExtendedUserConfig['test'],
   build: {
     outDir: 'dist',
     sourcemap: true,
@@ -32,4 +48,4 @@ export default defineConfig({
       }
     }
   }
-});
+} as ExtendedUserConfig);
