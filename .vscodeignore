@@ -5,18 +5,20 @@ node_modules/**
 src/**
 .gitignore
 .yarnrc
-esbuild.js
 vsc-extension-quickstart.md
-**/tsconfig.json
-**/eslint.config.mjs
+**/.eslintrc.json
 **/*.map
 **/*.ts
-**/.vscode-test.*
+webview-ui/src/**
+webview-ui/node_modules/**
+webview-ui/public/>
+webview-ui/*.config.ts
+webview-ui/tsconfig*.json
 
-# Vitest and testing
+# Keep webview dist
+!webview-ui/dist/**
+!dist/**
+# Testing
 coverage/
-src/test/
-*.test.ts
-*.spec.ts
-.vscode/
+**/*.test.ts
 vitest.config.ts

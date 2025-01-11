@@ -1,14 +1,20 @@
 {
   "name": "sprint-app",
   "displayName": "Sprint App",
-  "description": "A VS Code extension for sprint management",
+  "description": "A VS Code extension that provides a React-based webview interface for running and managing terminal commands with real-time feedback.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.85.0"
   },
   "categories": [
-    "Other"
+    "Other",
+    "Programming Languages",
+    "Formatters"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bramburn/sprint-app"
+  },
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
@@ -24,29 +30,34 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run package",
-    "compile": "npm run check-types && npm run lint && node esbuild.js",
-    "package": "npm run build:webview && npm run check-types && npm run lint && node esbuild.js --production && vsce package",
+    "vscode:prepublish": "npm run compile",
+    "compile": "npm-run-all -s build:webview check-types lint build:extension",
+    "package": "npm run compile",
     "build:webview": "cd webview-ui && npm run build",
+    "build:extension": "node esbuild.js --production",
+    "package:vsix": "vsce package",
+    "watch": "npm-run-all -p watch:*",
+    "watch:extension": "node esbuild.js --watch",
+    "watch:webview": "cd webview-ui && npm run dev",
     "check-types": "tsc -p . --noEmit",
-    "compile-tests": "tsc -p . --outDir out",
-    "watch-tests": "tsc -p . --outDir out --watch",
-    "pretest": "npm run compile-tests && npm run compile && npm run lint",
-    "lint": "eslint .",
+    "lint": "cross-env NODE_OPTIONS='--max-old-space-size=4096' eslint .",
     "test": "vitest run",
     "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage",
     "test:ui": "cd webview-ui && npm run test",
-    "test:all": "npm run test && npm run test:ui"
+    "test:all": "npm-run-all -s test test:ui"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
     "@types/node": "18.x",
     "@types/vscode": "^1.85.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
     "@vscode/test-electron": "^2.3.9",
+    "cross-env": "^7.0.3",
     "eslint": "^8.56.0",
-    "npm-run-all2": "^6.2.4",
+    "npm-run-all2": "^6.2.6",
     "typescript": "^5.3.3",
     "vitest": "^2.1.8"
   },

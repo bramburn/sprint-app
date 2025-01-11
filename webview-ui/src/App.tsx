@@ -24,7 +24,9 @@ function App() {
         <div className="flex space-x-2 mb-4">
           <VSCodeTextField 
             value={inputText}
-            onChange={handleInputChange}
+            onChange={(e) =>
+              handleInputChange(e as unknown as React.ChangeEvent<HTMLInputElement>)
+            }
             placeholder="Enter a message"
             className="flex-grow"
           />

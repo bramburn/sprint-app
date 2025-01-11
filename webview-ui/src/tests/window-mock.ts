@@ -1,3 +1,4 @@
+// 
 // Mock implementation for window.matchMedia
 // This is crucial for testing components that rely on media queries
 

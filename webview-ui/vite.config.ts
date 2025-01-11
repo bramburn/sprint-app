@@ -9,6 +9,13 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: true,
     emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        entryFileNames: `assets/[name].js`,
+        chunkFileNames: `assets/[name].js`,
+        assetFileNames: `assets/[name].[ext]`
+      }
+    }
   },
   resolve: {
     alias: [
@@ -19,13 +26,14 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./src/setupTests.ts'],
+    setupFiles: ['./src/test/setup.ts'],
+    include: ['./src/**/*.{test,spec}.{ts,tsx}'],
     coverage: {
-      reporter: ['text', 'html'],
+      reporter: ['text', 'json', 'html'],
       exclude: [
         'node_modules/',
-        'src/setupTests.ts',
-      ],
-    },
-  },
+        'src/test/setup.ts',
+      ]
+    }
+  }
 });

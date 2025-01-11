@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Message, ExtensionMessage, WebviewMessage } from '@shared/messages';
+import { Message } from '@shared/messages';
 
 const vscode: ReturnType<typeof acquireVsCodeApi> = acquireVsCodeApi();
 
