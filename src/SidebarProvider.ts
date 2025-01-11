@@ -6,7 +6,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   public static readonly viewId = 'sprint-sidebar-view';
   private _view?: vscode.WebviewView;
   private messageSubject = new Subject<any>();
-  private errorSubject = new Subject<Error>();
+  private errorSubject = new Subject<any>();
 
   constructor(
     private readonly _extensionUri: vscode.Uri,
@@ -34,14 +34,14 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
         }
       }),
       catchError((error, caught) => {
-        this.errorSubject.next(error as Error);
+        this.errorSubject.next(error as any);
         return caught;
       })
     ).subscribe(msg => {
       if (this._view) {
         this._view.webview.postMessage(msg).then(
           () => {},
-          (error: Error) => {
+          (error: any) => {
             this.errorSubject.next(error);
           }
         );

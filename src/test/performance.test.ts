@@ -1,26 +1,13 @@
 import { performance } from 'perf_hooks';
 import { expect } from 'vitest';
+import * as vscode from 'vscode';
 import { SidebarProvider } from '../SidebarProvider';
-
-// Create a more accurate mock of vscode.Uri
-const createMockUri = (path: string) => ({
-  path,
-  scheme: 'file',
-  authority: '',
-  query: '',
-  fragment: '',
-  fsPath: path,
-  with: () => createMockUri(path),
-  toString: () => path,
-  toJSON: () => path
-});
 
 describe('Performance Tests', () => {
   it('Sidebar webview initialization time', () => {
     const startTime = performance.now();
 
-    const extensionUri = createMockUri('/mock/extension/path');
-    const sidebarProvider = new SidebarProvider(extensionUri);
+    const sidebarProvider = new SidebarProvider(vscode.ExtensionContext.extensionUri);
 
     const endTime = performance.now();
     const initTime = endTime - startTime;

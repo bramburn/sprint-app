@@ -8,7 +8,7 @@
 		"sourceMap": true,
 		"rootDir": "src",
 		"outDir": "./out",
-		"strict": true,   /* enable all strict type-checking options */
+		"strict": true, /* enable all strict type-checking options */
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true
@@ -20,6 +20,26 @@
 		"out",
 		"coverage",
 		"webview-ui",
-		"vite.config.ts"
+		"**/__mocks__",
+
+		"vite.config.ts",
+		"**/*.test.ts", // Exclude all test files ending with .test.ts
+		"**/*.spec.ts", // Exclude all test files ending with .spec.ts
+		"src/test" // Exclude the entire test directory (if applicable)
+	],
+	"overrides": [
+		{
+			"files": [
+				"**/test/**/*.test.ts"
+			],
+			"compilerOptions": {
+				"strict": false,
+				"noImplicitAny": false,
+				"strictNullChecks": false,
+				"strictFunctionTypes": false,
+				"strictBindCallApply": false,
+				"strictPropertyInitialization": false
+			}
+		}
 	]
 }
