@@ -5,6 +5,7 @@ class MediaQueryListMock implements MediaQueryList {
   private _media: string;
   private _matches: boolean;
   private _onchangeHandlers: ((this: MediaQueryList, ev: MediaQueryListEvent) => any)[] = [];
+  onchange: ((this: MediaQueryList, ev: MediaQueryListEvent) => any) | null = null;
 
   constructor(media: string) {
     this._media = media;
@@ -28,16 +29,33 @@ class MediaQueryListMock implements MediaQueryList {
     this._onchangeHandlers = this._onchangeHandlers.filter(handler => handler !== listener);
   }
 
-  addEventListener(type: 'change', listener: (this: MediaQueryList, ev: MediaQueryListEvent) => any): void {
-    this._onchangeHandlers.push(listener);
+  addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void {
+    if (type === 'change') {
+      const typedListener = listener as (this: MediaQueryList, ev: MediaQueryListEvent) => any;
+      this._onchangeHandlers.push(typedListener);
+      // Update onchange if it's a function
+      if (typeof typedListener === 'function') {
+        this.onchange = typedListener;
+      }
+    }
   }
 
-  removeEventListener(type: 'change', listener: (this: MediaQueryList, ev: MediaQueryListEvent) => any): void {
-    this._onchangeHandlers = this._onchangeHandlers.filter(handler => handler !== listener);
+  removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void {
+    if (type === 'change') {
+      const typedListener = listener as (this: MediaQueryList, ev: MediaQueryListEvent) => any;
+      this._onchangeHandlers = this._onchangeHandlers.filter(handler => handler !== typedListener);
+      // Clear onchange if it matches the removed listener
+      if (this.onchange === typedListener) {
+        this.onchange = null;
+      }
+    }
   }
 
   dispatchEvent(event: MediaQueryListEvent): boolean {
     this._onchangeHandlers.forEach(handler => handler.call(this, event));
+    if (this.onchange) {
+      this.onchange.call(this, event);
+    }
     return true;
   }
 }
@@ -49,7 +67,7 @@ interface Window {
 
 // Mock window.matchMedia if it doesn't exist
 if (!window.matchMedia) {
-  window.matchMedia = (query: string) => {
+  window.matchMedia = (query: string): MediaQueryList => {
     return new MediaQueryListMock(query);
   };
 }
