@@ -2,6 +2,8 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as path from 'path';
+import { Subject } from 'rxjs';
+import { WebviewMessage, ExtensionMessage } from '@shared/messages';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -9,7 +11,10 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "sprint-app" is now active!');
+	console.log('Sprint App extension is now active!');
+
+	// Create a message subject for handling webview communications
+	const messageSubject = new Subject<WebviewMessage>();
 
 	// Register the command to open the webview
 	const disposableWebview = vscode.commands.registerCommand('sprint-app.openWebview', () => {
@@ -39,25 +44,59 @@ export function activate(context: vscode.ExtensionContext) {
 
 		// Handle messages from the webview
 		panel.webview.onDidReceiveMessage(
-			(message) => {
-				switch (message.command) {
-					case 'alert':
-						vscode.window.showInformationMessage(message.text);
-						return;
-				}
+			(message: WebviewMessage) => {
+				// Process the message using RxJS
+				messageSubject.next(message);
 			},
 			undefined,
 			context.subscriptions
 		);
+
+		// Subscribe to message processing
+		const subscription = messageSubject.subscribe((message) => {
+			try {
+				switch (message.type) {
+					case 'user_input':
+						// Process user input message
+						const response: ExtensionMessage = {
+							type: 'response',
+							id: message.id,
+							timestamp: Date.now(),
+							payload: {
+								processedText: `Received: ${message.payload.text}`,
+								length: message.payload.text.length
+							}
+						};
+						
+						// Send response back to webview
+						panel.webview.postMessage(response);
+						break;
+					
+					default:
+						console.warn('Unhandled message type:', message.type);
+				}
+			} catch (error) {
+				// Send error response
+				const errorResponse: ExtensionMessage = {
+					type: 'error',
+					id: message.id,
+					timestamp: Date.now(),
+					payload: null,
+					error: error instanceof Error ? error.message : 'Unknown error'
+				};
+				
+				panel.webview.postMessage(errorResponse);
+			}
+		});
+
+		// Cleanup when panel is disposed
+		panel.onDidDispose(() => {
+			subscription.unsubscribe();
+		});
 	});
 
-	// The original hello world command
-	const disposableHelloWorld = vscode.commands.registerCommand('sprint-app.helloWorld', () => {
-		vscode.window.showInformationMessage('Hello World from sprint_app!');
-	});
-
-	// Add both commands to the subscriptions
-	context.subscriptions.push(disposableWebview, disposableHelloWorld);
+	// Add the command to subscriptions
+	context.subscriptions.push(disposableWebview);
 }
 
 function getWebviewContent(webview: vscode.Webview, webviewUri: vscode.Uri): string {

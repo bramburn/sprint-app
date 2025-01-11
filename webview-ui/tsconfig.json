@@ -5,10 +5,9 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "moduleResolution": "node",
-    
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": false,
+    "noEmit": true,
     "outDir": "./dist",
     "rootDir": "./src",
     "jsx": "react-jsx",
@@ -21,11 +20,16 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "types": ["vitest/globals", "@testing-library/jest-dom"],
-    "baseUrl": ".",
+    "baseUrl": "../",
     "paths": {
-      "@/*": ["src/*"]
-    }
+      "@/*": ["webview-ui/src/*"],
+      "@shared/*": ["../shared/*"]
+    },
+    "composite": true
   },
-  "include": ["src"],
+  "include": [
+    "src",
+    "../shared"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
