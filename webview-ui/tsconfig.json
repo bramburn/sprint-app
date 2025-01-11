@@ -23,7 +23,7 @@
     "baseUrl": "../",
     "paths": {
       "@/*": ["webview-ui/src/*"],
-      "@shared/*": ["../shared/*"]
+      "@shared/*": ["src/shared/*"]
     },
     "composite": true
   },

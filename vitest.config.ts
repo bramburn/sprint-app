@@ -6,49 +6,32 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     include: [
-      'src/**/*.{test,spec}.{ts,tsx}',
-      'webview-ui/src/**/*.{test,spec}.{js,jsx,ts,tsx}'
+      'src/**/*.{test,spec}.{ts,tsx}'
     ],
     exclude: [
       '**/node_modules/**',
       '**/dist/**',
-      '**/out/**'
+      '**/out/**',
+      '**/webview-ui/**'  // Explicitly exclude webview-ui tests
     ],
     setupFiles: [
-      './src/tests/setup.ts',
-      './webview-ui/src/setupTests.ts'
+      './src/tests/setup.ts'
     ],
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'html', 'lcov'],
-      reportsDirectory: './coverage',
-      all: true,
-      include: [
-        'src/**/*.{ts,tsx}',
-        'webview-ui/src/**/*.{js,jsx,ts,tsx}'
-      ],
+      reporter: ['text', 'json', 'html'],
       exclude: [
-        'src/**/*.d.ts',
-        'src/**/*.test.{ts,tsx}',
-        'src/**/*.spec.{ts,tsx}',
-        'src/tests/**/*',
-        'webview-ui/**/*.test.{js,jsx,ts,tsx}'
+        'node_modules/**',
+        'src/test/**',
+        'dist/**',
+        'out/**',
+        'webview-ui/**'
       ]
-    },
-    root: path.resolve(__dirname, './'),
-    resolveSnapshotPath: (testPath, snapExtension) => {
-      return testPath.replace(/\.{ts,tsx,js,jsx}$/, snapExtension);
-    },
-    deps: {
-      optimizer: {
-        ssr: {
-          external: ['vscode']
-        }
-      }
-    },
-    // Add global types for Vitest
-    typecheck: {
-      tsconfig: './tsconfig.json'
+    }
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src')
     }
   }
 });

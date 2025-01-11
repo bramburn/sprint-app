@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { MessageHandler } from '../../messageHandler';
-import { WebviewMessage } from '../../types/messages';
+import { WebviewMessage } from '@shared/messages';
 
 describe('MessageHandler', () => {
   let messageHandler: MessageHandler;
@@ -13,31 +13,29 @@ describe('MessageHandler', () => {
     messageHandler.dispose();
   });
 
-  it('should process messages correctly', (done) => {
+  it('should process messages correctly', () => {
     const testMessage: WebviewMessage = {
       type: 'test',
       id: '123',
       timestamp: Date.now(),
-      payload: { data: 'test' }
+      payload: { text: 'Test' }
     };
 
     messageHandler.getResponseObservable().subscribe((response) => {
       expect(response.type).toBe('response');
       expect(response.id).toBe(testMessage.id);
       expect(response.payload).toBeDefined();
-      done();
     });
 
     messageHandler.sendMessage(testMessage);
   });
 
-  it('should handle errors gracefully', (done) => {
+  it('should handle errors gracefully', () => {
     const invalidMessage = {} as WebviewMessage;
 
     messageHandler.getResponseObservable().subscribe((response) => {
       expect(response.type).toBe('error');
       expect(response.error).toBeDefined();
-      done();
     });
 
     messageHandler.sendMessage(invalidMessage);

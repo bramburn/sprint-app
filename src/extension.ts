@@ -5,6 +5,15 @@ import * as path from 'path';
 import { Subject } from 'rxjs';
 import { WebviewMessage, ExtensionMessage } from '@shared/messages';
 
+// Type guard to check if payload has text
+function isUserInputMessage(message: WebviewMessage): message is WebviewMessage & { payload: { text: string } } {
+	return message.type === 'user_input' && 
+		   typeof message.payload === 'object' && 
+		   message.payload !== null && 
+		   'text' in message.payload && 
+		   typeof (message.payload as any).text === 'string';
+}
+
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -57,7 +66,11 @@ export function activate(context: vscode.ExtensionContext) {
 			try {
 				switch (message.type) {
 					case 'user_input':
-						// Process user input message
+						// Add type guard
+						if (!isUserInputMessage(message)) {
+							throw new Error('Invalid user input message');
+						}
+
 						const response: ExtensionMessage = {
 							type: 'response',
 							id: message.id,

@@ -1,6 +1,6 @@
 import { Subject, Observable } from 'rxjs';
 import { filter, map, catchError } from 'rxjs/operators';
-import { WebviewMessage, ExtensionMessage, MessageResponse } from './types/messages';
+import { WebviewMessage, ExtensionMessage, MessageResponse } from '@shared/messages';
 
 export class MessageHandler {
   private messageSubject = new Subject<WebviewMessage>();

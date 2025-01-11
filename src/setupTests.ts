@@ -22,6 +22,17 @@ vi.mock('vscode', () => ({
             clear: vi.fn(),
             show: vi.fn(),
         }),
+        createWebviewPanel: vi.fn().mockReturnValue({
+            webview: {
+                html: '',
+                onDidReceiveMessage: vi.fn(),
+                postMessage: vi.fn(),
+                asWebviewUri: vi.fn(),
+                cspSource: ''
+            },
+            onDidDispose: vi.fn(),
+            dispose: vi.fn()
+        }),
     },
     
     // Commands mocks

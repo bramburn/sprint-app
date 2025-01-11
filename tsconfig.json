@@ -7,7 +7,7 @@
 		],
 		"declaration": true,
 		"outDir": "./dist",
-		"rootDir": "./src",
+		"rootDir": ".",
 		"strict": true,
 		"noImplicitAny": false,
 		"esModuleInterop": true,
@@ -23,7 +23,7 @@
 		"skipLibCheck": true,
 		"baseUrl": ".",
 		"paths": {
-			"@shared/*": ["shared/*"],
+			"@shared/*": ["src/shared/*"],
 			"rxjs": ["node_modules/rxjs"]
 		},
 		"composite": true
@@ -37,6 +37,5 @@
 		"node_modules",
 		"webview-ui/**/*",
 		"dist"
-	],
-	
+	]
 }

@@ -3,6 +3,16 @@ import { render, screen } from '@testing-library/react';
 import App from '../App';
 import '../tests/window-mock';
 
+// Mock the useMessages hook
+vi.mock('../hooks/useMessages', () => ({
+  useMessages: () => ({
+    sendMessage: vi.fn(),
+    response: null,
+    error: null,
+    isLoading: false
+  })
+}));
+
 // Mock the VSCode API
 const mockVscode = {
   postMessage: vi.fn(),
@@ -13,25 +23,36 @@ const mockVscode = {
 // Simulate the VSCode API being available
 beforeEach(() => {
   (window as any).acquireVsCodeApi = () => mockVscode;
+  
+  // Ensure document and body exist
+  if (!document.body) {
+    const body = document.createElement('body');
+    document.appendChild(body);
+  }
+  
+  // Create a root div manually
+  const existingRoot = document.getElementById('root');
+  if (!existingRoot) {
+    const root = document.createElement('div');
+    root.id = 'root';
+    document.body.appendChild(root);
+  }
 });
 
 describe('App', () => {
   it('renders without crashing', () => {
-    // Create a root div manually since jsdom doesn't do this automatically
-    const root = document.createElement('div');
-    root.id = 'root';
-    document.body.appendChild(root);
-
     const { container } = render(<App />);
     expect(container).toBeTruthy();
     expect(document.getElementById('root')).toBeTruthy();
   });
 
-  it('renders VSCode button', () => {
+  it('renders input and button', () => {
     render(<App />);
-    const button = screen.getByText('Click me');
+    const input = screen.getByPlaceholderText('Enter a message');
+    const button = screen.getByText('Send');
+    
+    expect(input).toBeTruthy();
     expect(button).toBeTruthy();
-    expect(button).toBeInstanceOf(HTMLElement);
   });
 
   it('handles window.matchMedia', () => {
