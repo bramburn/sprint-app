@@ -101,8 +101,12 @@
     "vscode": "^1.1.37"
   },
   "dependencies": {
-    "rxjs": "^7.8.1",
+    "@chakra-ui/react": "^3.3.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "framer-motion": "^11.17.0",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "rxjs": "^7.8.1"
   }
 }

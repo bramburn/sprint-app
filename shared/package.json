@@ -14,13 +14,17 @@
         "lint": "eslint .",
         "prepublishOnly": "npm run build"
     },
-    "keywords": ["sprint-app", "shared", "types"],
+    "keywords": [
+        "sprint-app",
+        "shared",
+        "types"
+    ],
     "author": "",
     "license": "ISC",
     "devDependencies": {
+        "@types/node": "^20.0.0",
         "@types/react": "^18.0.0",
         "@types/react-dom": "^18.0.0",
-        "@types/node": "^20.0.0",
         "@typescript-eslint/eslint-plugin": "^7.0.0",
         "@typescript-eslint/parser": "^7.0.0",
         "@typescript-eslint/utils": "^7.0.0",
@@ -29,10 +33,11 @@
         "eslint-plugin-vitest": "^0.5.4",
         "jsdom": "^26.0.0",
         "typescript": "^5.7.3",
-        "vitest": "^2.1.8",
-        "vite": "^5.0.12"
+        "vite": "^5.0.12",
+        "vitest": "^2.1.8"
     },
     "dependencies": {
+      
         "react": "^18.0.0",
         "react-dom": "^18.0.0"
     }

@@ -17,6 +17,7 @@
     "serve:webview": "vite serve --outDir out/webview"
   },
   "dependencies": {
+   
     "@sprint-app/shared": "file:../shared",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"

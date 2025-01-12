@@ -53,6 +53,9 @@
 			],
 			"@extension/*": [
 				"./src/*"
+			],
+			"@shared/components/*": [
+				"shared/react/components/*"
 			]
 		},
 		"typeRoots": [
