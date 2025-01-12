@@ -33,8 +33,8 @@ export function activate(context: vscode.ExtensionContext) {
                 { enableScripts: true }
             );
             const webviewDir = vscode.Uri.joinPath(context.extensionUri, 'out', 'webview');
-            const webviewBaseUri = panel.webview.asWebviewUri(webviewDir);
-
+            const uri = panel.webview.asWebviewUri(webviewDir);
+            vscode.window.showInformationMessage(uri.toString());
             panel.webview.options = {
                 enableScripts: true,
                 localResourceRoots: [webviewDir]
@@ -43,45 +43,16 @@ export function activate(context: vscode.ExtensionContext) {
             const webviewJs = vscode.Uri.joinPath(context.extensionUri, 'out', 'webview', 'index.js');
             const cssUri = panel.webview.asWebviewUri(webviewCss);
             const jsUri = panel.webview.asWebviewUri(webviewJs);
-            panel.webview.html = getWebviewContent(webviewBaseUri.toString(), panel.webview.cspSource, cssUri.toString(), jsUri.toString());
-
-            // Queue for messages to be sent to the webview
-            const messageQueue: any[] = [];
-            let isWebviewReady = false;
-
-            // Function to send messages, either immediately or queue them
-            const sendMessage = (message: any) => {
-                if (isWebviewReady) {
-                    panel.webview.postMessage(message);
-                } else {
-                    messageQueue.push(message);
-                }
-            };
+            panel.webview.html = getWebviewContent(uri.toString(), panel.webview.cspSource, cssUri.toString(), jsUri.toString());
 
             panel.webview.onDidReceiveMessage((message) => {
                 if (message.type === 'close') {
                     panel.dispose();
                 }
-            });
-
-            panel.webview.onDidReceiveMessage((message) => {
                 if (message.type === 'ready') {
-                    isWebviewReady = true;
-                    
-                    // Send initial base URI
-                    sendMessage({
-                        type: 'setBaseUri',
-                        uri: webviewBaseUri.toString()
-                    });
-
-                    // Process any queued messages
-                    while (messageQueue.length > 0) {
-                        panel.webview.postMessage(messageQueue.shift());
-                    }
+                    vscode.window.showInformationMessage('ready');
                 }
             });
-
-         
         })
     );
 
@@ -102,27 +73,25 @@ function getNonce(): string {
     return text;
 }
 
-function getWebviewContent(webviewBaseUri: string, cspSource: string, styleUri: string, scriptUri: string): string {
+function getWebviewContent(baseUri: string, cspSource: string, styleUri: string, scriptUri: string): string {
 
     const nonce = getNonce();
-
-
 
     return `<!DOCTYPE html>
     <html lang="en">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src vscode-webview: data:; style-src ${cspSource}; script-src 'nonce-${nonce}';">
+            <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${cspSource}; script-src 'nonce-${nonce}';">
             <link rel="stylesheet" type="text/css" href="${styleUri}">
             <title>Sprint AI</title>
-             <script>
-            window.baseUri = "${webviewBaseUri}";
-        </script>
+            <script>
+            window.baseUri = "${baseUri}";
+            </script>
         </head>
         <body>
             <div id="root"></div>
-            <script nonce="${nonce}" type="module" src="${scriptUri}"></script>
+            <script nonce="${nonce}" src="${scriptUri}"></script>
         </body>
     </html>`;
 

@@ -2,7 +2,7 @@
   "files": [],
   "compilerOptions": {
     "types": ["node", "vscode"],
-		"typeRoots": ["./node_modules/@types", "./node_modules/vscode/vscode.d.ts", "./"],
+		"typeRoots": ["./node_modules/@types", "./node_modules/vscode/vscode.d.ts","./global.d.ts" ],
   },
   "references": [
     { "path": "./tsconfig.app.json" },

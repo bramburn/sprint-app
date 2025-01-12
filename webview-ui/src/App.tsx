@@ -1,41 +1,26 @@
 import { useEffect, useState } from 'react'
-
+// import type { WebviewApi } from 'vscode-webview';
 import './App.css'
 
 
 function App() {
   const [count, setCount] = useState(0)
-  const [baseUri, setBaseUri] = useState(window.baseUri)
-  const viteLogo = `${baseUri}/vite.svg`
-  const reactLogo = `${baseUri}/react.svg`
+  
+
+  const baseUri = window.baseUri;
 
   useEffect(() => {
-    //emit ready event to parent
-  const sendMessageToBackend = () => {
-    const vscode = acquireVsCodeApi(); // Get the VS Code API
+    const vscode = acquireVsCodeApi();
     vscode.postMessage({
-      command: 'ready',
-      text: true,
+      type: 'ready',
+      data: true
     });
-  };
-  sendMessageToBackend();
-
-    window.addEventListener('message', (event) => {
-      if (event.data.type === 'setBaseUri') {
-        setBaseUri(event.data.uri)
-      }
-    });
-  }, []);
+  }, [baseUri]);
 
   return (
     <>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <p>nothing</p>
       </div>
       <h1>Vite + React</h1>
       <p>The base URI is {baseUri}</p>
@@ -56,6 +41,6 @@ function App() {
 
 export default App
 function acquireVsCodeApi() {
-  throw new Error('Function not implemented.')
+  // Use the global function provided by VSCode
+  return (window as any).acquireVsCodeApi();
 }
-
