@@ -1,90 +1,61 @@
-import React, { useEffect, useState } from 'react';
-import { 
-  VSCodeButton, 
-  VSCodeProgressRing,
-  VSCodeDivider
-} from '@vscode/webview-ui-toolkit/react';
-import './App.css';
+import { useEffect, useState } from 'react'
 
-interface Message {
-  command: string;
-  text: string;
-  error?: string;
-}
+import './App.css'
+
 
 function App() {
-  const [response, setResponse] = useState<string>('');
-  const [error, setError] = useState<string>('');
-  const [loading, setLoading] = useState(false);
-  const vscode = (window as any).acquireVsCodeApi();
+  const [count, setCount] = useState(0)
+  const [baseUri, setBaseUri] = useState(window.baseUri)
+  const viteLogo = `${baseUri}/vite.svg`
+  const reactLogo = `${baseUri}/react.svg`
 
   useEffect(() => {
-    const messageHandler = (event: MessageEvent) => {
-      const message: Message = event.data;
-      setLoading(false);
+    //emit ready event to parent
+  const sendMessageToBackend = () => {
+    const vscode = acquireVsCodeApi(); // Get the VS Code API
+    vscode.postMessage({
+      command: 'ready',
+      text: true,
+    });
+  };
+  sendMessageToBackend();
 
-      switch (message.command) {
-        case 'response':
-          setResponse(message.text);
-          setError('');
-          break;
-        case 'error':
-          setError(message.error || 'Unknown error occurred');
-          break;
-        default:
-          console.warn('Unknown command:', message.command);
+    window.addEventListener('message', (event) => {
+      if (event.data.type === 'setBaseUri') {
+        setBaseUri(event.data.uri)
       }
-    };
-
-    window.addEventListener('message', messageHandler);
-    return () => window.removeEventListener('message', messageHandler);
+    });
   }, []);
 
-  const handleClick = () => {
-    setLoading(true);
-    setError('');
-    try {
-      vscode.postMessage({ 
-        command: 'alert', 
-        text: 'Button clicked in Sprint App!' 
-      });
-    } catch (err) {
-      setError('Failed to send message to extension');
-      setLoading(false);
-    }
-  };
-
   return (
-    <div className="p-4">
-      <VSCodeButton 
-        onClick={handleClick}
-        disabled={loading}
-      >
-        {loading ? 'Processing...' : 'Click me'}
-      </VSCodeButton>
-
-      {loading && (
-        <div className="mt-4">
-          <VSCodeProgressRing />
-        </div>
-      )}
-
-      {error && (
-        <div className="mt-4 p-2 text-red-500">
-          {error}
-        </div>
-      )}
-
-      {response && (
-        <>
-          <VSCodeDivider className="my-4" />
-          <div className="p-2 bg-vscode-editor-background">
-            {response}
-          </div>
-        </>
-      )}
-    </div>
-  );
+    <>
+      <div>
+        <a href="https://vite.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+      </div>
+      <h1>Vite + React</h1>
+      <p>The base URI is {baseUri}</p>
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <p>
+          Edit <code>src/App.tsx</code> and save to test HMR
+        </p>
+      </div>
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
+    </>
+  )
 }
 
-export default App;
+export default App
+function acquireVsCodeApi() {
+  throw new Error('Function not implemented.')
+}
+

@@ -1,27 +1,21 @@
 {
 	"compilerOptions": {
-		"module": "ESNext",
+		"module": "CommonJS",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
 		"target": "ES2022",
 		"lib": [
-			"ES2022",
-			"DOM"
+			"ES2022"
 		],
-		"strict": true,
 		"sourceMap": true,
-		"outDir": "dist",
 		"rootDir": "src",
-		"moduleResolution": "node",
-		"esModuleInterop": true,
-		"allowSyntheticDefaultImports": true,
-		"forceConsistentCasingInFileNames": true,
-		"skipLibCheck": true,
-		"resolveJsonModule": true
-	},
-	"include": [
-		"src/**/*"
-	],
-	"exclude": [
-		"node_modules",
-		"**/*.test.ts"
-	]
+		"strict": true,   /* enable all strict type-checking options */
+		"types": ["node", "vscode"],
+		"typeRoots": ["./node_modules/@types", "./node_modules/vscode/vscode.d.ts", "./"],
+		/* Additional Checks */
+		// "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
+		// "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
+		// "noUnusedParameters": true,  /* Report errors on unused parameters. */
+	}
 }

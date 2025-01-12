@@ -3,19 +3,25 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  base: './',
   build: {
-    outDir: 'dist',
+    outDir: '../out/webview', // Output directory relative to the root project
     rollupOptions: {
+      input: './index.html',
       output: {
-        entryFileNames: 'assets/[name].js',
-        chunkFileNames: 'assets/[name].js',
-        assetFileNames: 'assets/[name].[ext]'
-      }
-    }
+        entryFileNames: `[name].js`,
+        chunkFileNames: `[name].js`,
+        assetFileNames: `[name].[ext]`,
+        manualChunks: undefined, // Avoid chunking for simplicity in webview scripts
+      },
+    },
+  },
+  server: {
+    port: 3000,
   },
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: './src/test-setup.ts'
-  }
+    setupFiles: './src/setupTests.ts',
+  },
 });
