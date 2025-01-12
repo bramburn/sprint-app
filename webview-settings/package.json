@@ -12,7 +12,9 @@
     "test:coverage": "vitest run --coverage",
     "lint": "eslint .",
     "check-types": "tsc --noEmit",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:webview": "vite build --outDir out/webview",
+    "serve:webview": "vite serve --outDir out/webview"
   },
   "dependencies": {
     "@sprint-app/shared": "workspace:*",

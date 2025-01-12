@@ -6,7 +6,8 @@
     "types": "dist/index.d.ts",
     "type": "module",
     "scripts": {
-        "build": "tsc",
+        "dev": "vite",
+        "build": "tsc && vite build",
         "test": "vitest",
         "test:coverage": "vitest run --coverage",
         "check-types": "tsc --noEmit",
@@ -28,7 +29,8 @@
         "eslint-plugin-vitest": "^0.5.4",
         "jsdom": "^26.0.0",
         "typescript": "^5.7.3",
-        "vitest": "^2.1.8"
+        "vitest": "^2.1.8",
+        "vite": "^5.0.12"
     },
     "dependencies": {
         "react": "^19.0.0",

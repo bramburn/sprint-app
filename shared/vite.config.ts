@@ -1,7 +1,8 @@
-import { defineConfig } from 'vite';
+import { defineConfig, mergeConfig } from 'vite';
+import baseConfig from '../vite.base.config';
 import path from 'path';
 
-export default defineConfig({
+export default mergeConfig(baseConfig, defineConfig({
   resolve: {
     alias: {
       '@shared': path.resolve(__dirname, './src'),
@@ -28,6 +29,11 @@ export default defineConfig({
   },
   build: {
     outDir: '../out/shared',
-    emptyOutDir: true
+    emptyOutDir: true,
+    lib: {
+      entry: path.resolve(__dirname, 'src/index.ts'),
+      name: 'SharedLibrary',
+      fileName: (format) => `index.${format}.js`
+    }
   }
-});
+}));
