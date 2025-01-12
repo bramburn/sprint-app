@@ -1,17 +1,16 @@
 {
-  "files": [],
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "types": ["node", "vscode"],
-    "noImplicitAny": false,
-    "strict": true,
-    "baseUrl": ".",
-    "paths": {
-      "@shared/*": ["../shared/*"]
-    },
-    "typeRoots": ["./node_modules/@types", "./node_modules/vscode/vscode.d.ts", "../shared/react/global.d.ts" ],
+    "composite": true,
+    "outDir": "./out/webview-sidebar",
+    "rootDir": "./src",
+    "declarationDir": "./out/webview-sidebar"
   },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
   "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
+    { "path": "../shared" }
   ]
 }

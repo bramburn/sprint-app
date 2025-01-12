@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "module": "ESNext",
+        "lib": ["ES2022", "DOM", "DOM.Iterable"],
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "noFallthroughCasesInSwitch": true,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "declaration": true,
+        "declarationMap": true,
+        "sourceMap": true,
+        "jsx": "react-jsx",
+        "baseUrl": ".",
+        "paths": {
+            "@sprint-app/shared/*": ["shared/src/*"],
+            "@sprint-app/shared": ["shared/src/index"],
+            "@sprint-app/webview-settings/*": ["webview-settings/src/*"],
+            "@sprint-app/webview-settings": ["webview-settings/src/index"],
+            "@sprint-app/webview-sidebar/*": ["webview-sidebar/src/*"],
+            "@sprint-app/webview-sidebar": ["webview-sidebar/src/index"]
+        },
+        "types": ["vitest/globals", "node", "vscode"]
+    },
+    "exclude": [
+        "node_modules",
+        "dist",
+        "**/out",
+        "**/dist"
+    ]
+}

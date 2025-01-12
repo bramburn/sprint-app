@@ -18,7 +18,7 @@ export default defineConfig({
     extensions: ['.ts', '.tsx', '.js', '.jsx']
   },
   build: {
-    outDir: '../out/webview-settings', 
+    outDir: '../out/webview-settings',
     emptyOutDir: true,
     rollupOptions: {
       input: './index.html',
@@ -40,6 +40,6 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: './src/test/setup.ts'
+    setupFiles: './src/setupTests.ts'
   }
 });

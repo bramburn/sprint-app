@@ -1,37 +1,16 @@
 {
-  "files": [],
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "baseUrl": ".",
-    "paths": {
-      "@shared/*": ["../shared/*"],
-      "@shared/react/*": ["../shared/react/*"],
-      "@shared/dist/*": ["../shared/dist/*"],
-      "@webview/*": ["../webview-settings/src/*"],
-      "@sidebar/*": ["../webview-sidebar/src/*"],
-      "@extension/*": ["../src/*"]
-    },
-    "typeRoots": [
-      "./node_modules/@types", 
-      "../shared/react/global.d.ts"
-    ]
+    "composite": true,
+    "outDir": "./out/webview",
+    "rootDir": "./src",
+    "declarationDir": "./out/webview"
   },
-  "include": ["src"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
   "references": [
-    { "path": "./tsconfig.node.json" }
+    { "path": "../shared" }
   ]
 }
