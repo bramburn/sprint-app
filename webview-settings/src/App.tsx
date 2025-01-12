@@ -1,6 +1,6 @@
 import  { useEffect, useState } from 'react'
 import './App.css'
-import { useVSCode } from '@shared/react/hooks/vscode-hooks'
+import { useVSCode } from '@sprint-app/shared/react/hooks/vscode-hooks'
 
 function App() {
   const vscode = useVSCode()

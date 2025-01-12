@@ -1,0 +1,105 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;"><script src="https://puc.poecdn.net/standard.c8d3df4d67dddca2ccac.js"></script>
+    <meta charset="utf-8">
+    <title>Poe</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="https://puc.poecdn.net/tw.b9024aecac666455e183.js"></script><script src="https://puc.poecdn.net/deps.ac7e4de820f1e47e84a2.js"></script><script src="https://puc.poecdn.net/exports.b0f0f482cdeb5302b0b9.js"></script><script src="https://puc.poecdn.net/renderer.6065bf6c6271ccf44fe1.js"></script><script>Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }var _react = require('react'); var _react2 = _interopRequireDefault(_react);
+
+const Sidebar = ({ items }) => {
+  return (
+    _react2.default.createElement('nav', { className: "flex flex-col w-64 h-screen bg-gray-900 text-white p-4"      ,}
+      , _react2.default.createElement('h2', { className: "text-lg font-bold mb-4"  ,}, "Cursor Settings" )
+      , _react2.default.createElement('ul', null
+        , items.map((item, index) => (
+          _react2.default.createElement('li', {
+            key: index,
+            className: `p-2 rounded hover:bg-gray-700 ${
+              item.isActive ? "bg-gray-700" : ""
+            }`,}
+
+            , item.label
+          )
+        ))
+      )
+    )
+  );
+};
+
+const Section = ({ title, description, children }) => {
+  return (
+    _react2.default.createElement('div', { className: "mb-6 p-4 border border-gray-700 rounded-md"    ,}
+      , _react2.default.createElement('h3', { className: "text-lg font-semibold mb-2"  ,}, title)
+      , _react2.default.createElement('p', { className: "text-gray-400 mb-4" ,}, description)
+      , children
+    )
+  );
+};
+
+const MainContent = () => {
+  return (
+    _react2.default.createElement('main', { className: "flex-1 p-6 bg-gray-800 text-white"   ,}
+      , _react2.default.createElement(Section, {
+        title: "Account",
+        description: "You are currently signed in with nitrogen@gmail.com."      ,}
+
+        , _react2.default.createElement('div', { className: "flex space-x-4" ,}
+          , _react2.default.createElement('button', { className: "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"     ,}, "Manage"
+
+          )
+          , _react2.default.createElement('button', { className: "bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600"     ,}, "Log out"
+
+          )
+        )
+      )
+      , _react2.default.createElement(Section, {
+        title: "VS Code Import"  ,
+        description: "Instantly use all of your extensions, settings, and keybindings."        ,}
+
+        , _react2.default.createElement('button', { className: "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"     ,}, "+ Import"
+
+        )
+      )
+      , _react2.default.createElement(Section, {
+        title: "Rules for AI"  ,
+        description: "These rules get shown to the AI on all chats and Ctrl-K sessions."            ,}
+
+        , _react2.default.createElement('div', { className: "p-4 border border-gray-700 rounded bg-gray-900"    ,}
+          , _react2.default.createElement('p', null, "Always respond in English..."   )
+          /* Add more rules as needed */
+        )
+      )
+      , _react2.default.createElement(Section, {
+        title: "Include .cursorrules file"  ,
+        description: "If off, we will not include any .cursorrules files in your Rules for AI."             ,}
+
+        , _react2.default.createElement('div', { className: "flex items-center space-x-2"  ,}
+          , _react2.default.createElement('input', { type: "checkbox", className: "h-4 w-4" ,} )
+          , _react2.default.createElement('label', null, "If off, we will not include any .cursorrules files..."        )
+        )
+      )
+      , _react2.default.createElement('footer', { className: "text-right text-gray-400 mt-6"  ,}, "Saved ✓" )
+    )
+  );
+};
+
+const App = () => {
+  const sidebarItems = [
+    { label: "General", isActive: true },
+    { label: "Models", isActive: false },
+    { label: "Features", isActive: false },
+    { label: "Beta", isActive: false },
+  ];
+
+  return (
+    _react2.default.createElement('div', { className: "flex h-screen" ,}
+      , _react2.default.createElement(Sidebar, { items: sidebarItems,} )
+      , _react2.default.createElement(MainContent, null )
+    )
+  );
+};
+
+exports. default = App;
+</script></head>
+  <body>
+  
+
+<div id="preview-app"></div></body></html>
