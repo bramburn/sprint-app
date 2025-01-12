@@ -1,0 +1,53 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: |
+        npm ci
+        cd webview-ui
+        npm ci
+    
+    - name: Lint
+      run: |
+        npm run lint
+        cd webview-ui
+        npm run lint
+    
+    - name: Test
+      run: |
+        npm test
+        cd webview-ui
+        npm test
+    
+    - name: Build Extension
+      run: |
+        npm run build:extension
+        npm run build:webview
+    
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./coverage/coverage-final.json,./webview-ui/coverage/coverage-final.json
+        fail_ci_if_error: true

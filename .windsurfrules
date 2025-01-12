@@ -1,0 +1,5 @@
+./ contains npm package and containts ./src for the vscode extension
+./webview-ui contains npm package and containts ./src for the webview. output goes to ./out/webview/
+./webview-sidebar contains npm package and containts ./src for the webview sidebar. output goes to ./out/webview-sidebar/
+we are using vitest for testing.
+We are using ./shared/ to hold shared data types, interfaces, classes, and functions between the webview and vscode extension. we need to ensure we declare those aliases in tsconfig.

@@ -1,0 +1,40 @@
+{
+    "extends": "../tsconfig.base.json",
+    "compilerOptions": {
+        "composite": true,
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "declarationDir": "./dist",
+        "target": "ES2022",
+        "module": "commonjs",
+        "lib": ["ES2022", "DOM"],
+        "declaration": true,
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "jsx": "react-jsx",
+        "paths": {
+            "@shared/*": ["./src/*"],
+            "@shared/react": ["./src/react"],
+            "@shared/dist": ["./dist"],
+            "@extension/*": ["../src/*"],
+            "@webview/*": ["../webview-settings/src/*"],
+            "@sidebar/*": ["../webview-sidebar/src/*"]
+        },
+        "types": ["vitest/globals"]
+    },
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.tsx"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ],
+    "references": [
+        { "path": "../webview-settings" },
+        { "path": "../webview-sidebar" }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "./out/webview",
+    "rootDir": "./src",
+    "declarationDir": "./out/webview"
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "references": [
+    { "path": "../shared" }
+  ]
+}

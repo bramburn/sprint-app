@@ -1,16 +1,89 @@
 {
 	"compilerOptions": {
-		"module": "Node16",
 		"target": "ES2022",
+		"module": "commonjs",
 		"lib": [
-			"ES2022"
+			"ES2022",
+			"DOM"
 		],
+		"declaration": true,
+		"outDir": "./dist",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"moduleResolution": "node",
+		"jsx": "react-jsx",
+		"baseUrl": ".",
+		"resolveJsonModule": true,
 		"sourceMap": true,
-		"rootDir": "src",
-		"strict": true,   /* enable all strict type-checking options */
-		/* Additional Checks */
-		// "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
-		// "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
-		// "noUnusedParameters": true,  /* Report errors on unused parameters. */
-	}
+		"rootDirs": [
+			"src"
+		],
+		"paths": {
+			"@shared/*": [
+				"./shared/*"
+			],
+			"@sprint-app/shared": [
+				"./shared/dist"
+			],
+			"@sprint-app/shared/*": [
+				"shared/src/*"
+			],
+			"@sprint-app/shared": [
+				"shared/src/index"
+			],
+			"@sprint-app/webview-settings/*": [
+				"webview-settings/src/*"
+			],
+			"@sprint-app/webview-settings": [
+				"webview-settings/src/index"
+			],
+			"@sprint-app/webview-sidebar/*": [
+				"webview-sidebar/src/*"
+			],
+			"@sprint-app/webview-sidebar": [
+				"webview-sidebar/src/index"
+			],
+			"@webview/*": [
+				"./webview-ui/src/*"
+			],
+			"@sidebar/*": [
+				"./webview-sidebar/src/*"
+			],
+			"@extension/*": [
+				"./src/*"
+			],
+			"@shared/components/*": [
+				"shared/react/components/*"
+			]
+		},
+		"typeRoots": [
+			"./node_modules/@types",
+			"./node_modules/vscode/vscode.d.ts"
+		],
+		"types": [
+			"vitest/globals",
+			"node",
+			"vscode"
+		]
+	},
+	"files": [],
+	"references": [
+		{ "path": "./shared" },
+		{ "path": "./webview-settings" },
+		{ "path": "./webview-sidebar" }
+	],
+	"include": [
+		"src/**/*",
+		"webview-ui/src/**/*",
+		"**/*.ts",
+		"**/*.tsx"
+	],
+	"exclude": [
+		"node_modules",
+		"dist",
+		"**/out",
+		"**/dist"
+	]
 }
