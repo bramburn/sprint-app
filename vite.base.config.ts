@@ -7,11 +7,6 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            return 'vendor';
-          }
-        },
         entryFileNames: `[name].[hash].js`,
         chunkFileNames: `[name].[hash].js`,
         assetFileNames: `[name].[hash].[ext]`

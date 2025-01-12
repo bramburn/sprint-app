@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useVSCode } from '@shared/react/hooks/vscode-hooks';
+import { useVSCode } from '../hooks/vscode-hooks';
 
 // Define the shape of the configuration
 export interface Config {
@@ -49,14 +49,9 @@ export const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
       const message = event.data;
 
       switch (message.command) {
-        case 'config':
-          // Merge received configuration with default configuration
-          { const updatedConfig = {
-            ...defaultConfig,
-            ...message.payload
-          };
-          setConfig(updatedConfig);
-          break; }
+        case 'updateConfig':
+          setConfig(message.payload);
+          break;
         default:
           break;
       }
@@ -71,25 +66,25 @@ export const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, [vscode]);
 
-  // Provide a method to update configuration
-  const updateConfig = (newConfig: Config) => {
-    setConfig(prevConfig => ({
-      ...prevConfig,
-      ...newConfig
-    }));
+  // Merge new config with existing or default
+  const updateConfig = (newConfig: Partial<Config>) => {
+    const updatedConfig = { 
+      ...defaultConfig, 
+      ...(config || {}), 
+      ...newConfig 
+    };
 
-    // Optionally send configuration update back to extension
+    // Post message to update config
     vscode.postMessage({
       command: 'updateConfig',
-      payload: newConfig
+      payload: updatedConfig
     });
+
+    setConfig(updatedConfig);
   };
 
   return (
-    <ConfigContext.Provider value={{ 
-      config: config || defaultConfig, 
-      setConfig: updateConfig 
-    }}>
+    <ConfigContext.Provider value={{ config, setConfig: updateConfig }}>
       {children}
     </ConfigContext.Provider>
   );
@@ -98,10 +93,8 @@ export const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
 // Custom hook to use the configuration
 export const useConfig = (): ConfigContextValue => {
   const context = useContext(ConfigContext);
-  
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useConfig must be used within a ConfigProvider');
   }
-  
   return context;
 };

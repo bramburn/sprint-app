@@ -21,12 +21,8 @@
 			"src"
 		],
 		"paths": {
-			"@shared/*": [
-				"./shared/*"
-			],
-			"@sprint-app/shared": [
-				"./shared/dist"
-			],
+		
+		
 			"@sprint-app/shared/*": [
 				"shared/src/*"
 			],

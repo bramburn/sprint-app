@@ -1,7 +1,7 @@
 import type { WebviewApi } from 'vscode-webview';
 import { useContext } from 'react';
-import { VSCodeContext } from '@shared/react/context/vscode-context';
-import { getVSCodeApi } from '@shared/react/api/vscode-api';
+import { VSCodeContext } from '../context/vscode-context';
+import { getVSCodeApi } from '../api/vscode-api';
 
 // Hook to use the VS Code API
 export const useVSCode = (): WebviewApi<unknown> => {

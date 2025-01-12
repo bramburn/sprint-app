@@ -6,8 +6,7 @@ export default mergeConfig(baseConfig, defineConfig({
   resolve: {
     alias: {
       '@shared': path.resolve(__dirname, './src'),
-      '@shared/react': path.resolve(__dirname, './src/react'),
-      '@shared/dist': path.resolve(__dirname, './dist'),
+
       '@extension': path.resolve(__dirname, '../src'),
       '@webview': path.resolve(__dirname, '../webview-settings/src'),
       '@sidebar': path.resolve(__dirname, '../webview-sidebar/src')

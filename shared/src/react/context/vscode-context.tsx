@@ -21,3 +21,6 @@ export const VSCodeProvider = ({ children }: { children: React.ReactNode }) => {
     </VSCodeContext.Provider>
   );
 };
+
+// Export hooks from vscode-hooks to maintain compatibility
+export { useVSCode, usePersistentState } from '../hooks/vscode-hooks';
