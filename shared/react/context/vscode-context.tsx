@@ -11,7 +11,7 @@ interface VSCodeContextValue {
 export const VSCodeContext = createContext<VSCodeContextValue | undefined>(undefined);
 
 // Provider component
-export const VSCodeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const VSCodeProvider = ({ children }: { children: React.ReactNode }) => {
   // No need for useMemo anymore since getVSCodeApi handles the singleton pattern
   const vscode = getVSCodeApi();
 

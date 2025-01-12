@@ -23,7 +23,7 @@ interface ConfigContextValue {
 const ConfigContext = createContext<ConfigContextValue | undefined>(undefined);
 
 // Provider component
-export const ConfigProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
   const vscode = useVSCode();
   const [config, setConfig] = useState<Config | null>(null);
 
