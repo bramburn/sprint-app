@@ -1,13 +1,16 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 import { VSCodeProvider } from './vscode-context'
+import { ConfigProvider } from './config-context'
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
     <VSCodeProvider>
-      <App />
+      <ConfigProvider>
+        <App />
+      </ConfigProvider>
     </VSCodeProvider>
-  </StrictMode>,
+  </React.StrictMode>,
 )

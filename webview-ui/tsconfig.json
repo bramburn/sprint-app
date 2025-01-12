@@ -2,6 +2,9 @@
   "files": [],
   "compilerOptions": {
     "types": ["node", "vscode"],
+    "noImplicitAny": false,
+    "strict": true,
+
 		"typeRoots": ["./node_modules/@types", "./node_modules/vscode/vscode.d.ts","./global.d.ts" ],
   },
   "references": [

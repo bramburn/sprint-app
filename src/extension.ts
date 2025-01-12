@@ -1,7 +1,5 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { log } from 'console';
-import path from 'path';
 import * as vscode from 'vscode';
 
 // This method is called when your extension is activated
@@ -46,11 +44,30 @@ export function activate(context: vscode.ExtensionContext) {
             panel.webview.html = getWebviewContent(uri.toString(), panel.webview.cspSource, cssUri.toString(), jsUri.toString());
 
             panel.webview.onDidReceiveMessage((message) => {
-                if (message.type === 'close') {
-                    panel.dispose();
-                }
-                if (message.type === 'ready') {
-                    vscode.window.showInformationMessage('ready');
+                switch (message.command) {
+                    case 'ready':
+                        console.log('Webview is ready, sending initial configuration');
+                        // Send initial configuration
+                        panel.webview.postMessage({
+                            command: 'config',
+                            payload: {
+                                theme: 'default',
+                                language: 'en',
+                                featureFlags: {
+                                    experimental: false
+                                }
+                            }
+                        });
+                        break;
+                    case 'updateConfig':
+                        console.log('Configuration update received:', message.payload);
+                        // Optional: Persist configuration or perform additional actions
+                        break;
+                    case 'close':
+                        panel.dispose();
+                        break;
+                    default:
+                        console.error('Unknown command:', message.command);
                 }
             });
         })
