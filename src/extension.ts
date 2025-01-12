@@ -25,20 +25,20 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         vscode.commands.registerCommand('sprint-ai.showWebview', () => {
             const panel = vscode.window.createWebviewPanel(
-                'webview',
+                'webview-settings',
                 'Settings Page',
                 vscode.ViewColumn.One,
                 { enableScripts: true }
             );
-            const webviewDir = vscode.Uri.joinPath(context.extensionUri, 'out', 'webview');
+            const webviewDir = vscode.Uri.joinPath(context.extensionUri, 'out', 'webview-settings');
             const uri = panel.webview.asWebviewUri(webviewDir);
             vscode.window.showInformationMessage(uri.toString());
             panel.webview.options = {
                 enableScripts: true,
                 localResourceRoots: [webviewDir]
             };
-            const webviewCss = vscode.Uri.joinPath(context.extensionUri, 'out', 'webview', 'index.css');
-            const webviewJs = vscode.Uri.joinPath(context.extensionUri, 'out', 'webview', 'index.js');
+            const webviewCss = vscode.Uri.joinPath(context.extensionUri, 'out', 'webview-settings', 'index.css');
+            const webviewJs = vscode.Uri.joinPath(context.extensionUri, 'out', 'webview-settings', 'index.js');
             const cssUri = panel.webview.asWebviewUri(webviewCss);
             const jsUri = panel.webview.asWebviewUri(webviewJs);
             panel.webview.html = getWebviewContent(uri.toString(), panel.webview.cspSource, cssUri.toString(), jsUri.toString());

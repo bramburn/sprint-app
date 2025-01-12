@@ -1,18 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import './index.css'
-import App from './App'
-import { VSCodeProvider } from '@sprint-app/shared/react/context/vscode-context'
+import { Provider as ChakraProvider } from '@sprint-app/shared/src/components/ui/provider'
 import { ConfigProvider } from '@sprint-app/shared/react/context/config-context'
-import { provideFASTDesignSystem } from "@microsoft/fast-components";
-provideFASTDesignSystem().register();
+import { VSCodeProvider } from '@sprint-app/shared/react/context/vscode-context'
+import App from './App'
+import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <VSCodeProvider>
       <ConfigProvider>
-        <App />
+        <ChakraProvider>
+          <App />
+        </ChakraProvider>
       </ConfigProvider>
     </VSCodeProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 )
