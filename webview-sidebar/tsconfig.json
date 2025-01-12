@@ -4,8 +4,11 @@
     "types": ["node", "vscode"],
     "noImplicitAny": false,
     "strict": true,
-
-		"typeRoots": ["./node_modules/@types", "./node_modules/vscode/vscode.d.ts","./global.d.ts" ],
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": ["../shared/*"]
+    },
+    "typeRoots": ["./node_modules/@types", "./node_modules/vscode/vscode.d.ts", "../shared/react/global.d.ts" ],
   },
   "references": [
     { "path": "./tsconfig.app.json" },

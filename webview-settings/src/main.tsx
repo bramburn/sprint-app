@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import App from './App.tsx'
-import { VSCodeProvider } from './vscode-context'
-import { ConfigProvider } from './config-context'
+import App from './App'
+import { VSCodeProvider } from '@shared/react/context/vscode-context'
+import { ConfigProvider } from '@shared/react/context/config-context'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

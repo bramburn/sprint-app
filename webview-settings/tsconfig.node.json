@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": false,
+    "paths": {
+      "@shared/*": ["../shared/dist/*"],
+      "@shared/react/*": ["../shared/react/*"],
+      "@shared/dist/*": ["../shared/dist/*"],
+      "@webview/*": ["../webview-settings/src/*"],
+      "@sidebar/*": ["../webview-sidebar/src/*"],
+      "@extension/*": ["../src/*"]
+    },
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
+  },
+  "include": ["vite.config.ts"]
+}

@@ -1,13 +1,11 @@
 {
-  "name": "webview-ui",
+  "name": "webview-sidebar",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "test": "vitest",
-    "test:coverage": "vitest run --coverage",
+    "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -24,7 +22,7 @@
     "@types/vscode": "^1.96.0",
     "@types/vscode-webview": "^1.57.5",
     "@vitejs/plugin-react": "^4.3.4",
-    "@vitest/coverage-v8": "^1.6.0",
+    "@vitest/coverage-v8": "^2.1.8",
     "eslint": "^9.17.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",

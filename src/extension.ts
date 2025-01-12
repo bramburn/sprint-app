@@ -63,6 +63,15 @@ export function activate(context: vscode.ExtensionContext) {
                         console.log('Configuration update received:', message.payload);
                         // Optional: Persist configuration or perform additional actions
                         break;
+                    case 'greeting':
+                        // wait 2 seconds
+                        setTimeout(() => {
+                            panel.webview.postMessage({
+                                command: 'incomingMessage',
+                                text: 'Hello from React at ' + new Date().toLocaleTimeString() + '!'
+                            });
+                        }, 2000);
+                        break;
                     case 'close':
                         panel.dispose();
                         break;

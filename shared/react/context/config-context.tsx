@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useVSCode } from './vscode-hooks';
+import { useVSCode } from '@shared/react/hooks/vscode-hooks';
 
 // Define the shape of the configuration
 export interface Config {

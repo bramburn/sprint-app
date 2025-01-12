@@ -5,7 +5,9 @@ export default defineConfig({
   plugins: [react()],
   base: './',
   build: {
-    outDir: '../out/webview', // Output directory relative to the root project
+    outDir: '../out/webview-sidebar', // Output directory relative to the root project
+    emptyOutDir: true, // Clean the output directory on each build
+
     rollupOptions: {
       input: './index.html',
       output: {

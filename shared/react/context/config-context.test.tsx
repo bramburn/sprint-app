@@ -1,11 +1,11 @@
 import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, renderHook, act } from '@testing-library/react';
-import { ConfigProvider, useConfig, Config } from './config-context';
-import { useVSCode } from './vscode-hooks';
+import { ConfigProvider, useConfig, Config } from '@shared/react/context/config-context';
+import { useVSCode } from '@shared/react/hooks/vscode-hooks';
 
 // Mock the vscode hooks
-vi.mock('./vscode-hooks', () => ({
+vi.mock('@shared/react/hooks/vscode-hooks', () => ({
   useVSCode: vi.fn()
 }));
 

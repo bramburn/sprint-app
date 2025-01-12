@@ -1,6 +1,6 @@
 import React, { createContext } from 'react';
 import type { WebviewApi } from 'vscode-webview';
-import { getVSCodeApi } from './vscode-api';
+import { getVSCodeApi } from '../api/vscode-api';
 
 // Define the context type
 interface VSCodeContextValue {

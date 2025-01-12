@@ -15,8 +15,9 @@ vite.config.ts
 .DS_Store
 coverage/
 node_modules/
-webview-ui/node_modules/
-webview-ui/coverage/
+webview-ui/{node_modules,coverage}
+webview-sidebar-ui/{node_modules,coverage}
+**/*.js
 **/*.map
 **/*.ts
 !**/*.d.ts

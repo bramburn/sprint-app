@@ -1,6 +1,6 @@
-import  { useState } from 'react'
+import  { useEffect, useState } from 'react'
 import './App.css'
-import { useVSCode } from './vscode-context'
+import { useVSCode } from '@shared/react/hooks/vscode-hooks'
 
 function App() {
   const vscode = useVSCode()
@@ -11,6 +11,14 @@ function App() {
     vscode.postMessage({ command: 'greeting', text: messageToSend })
     setMessage(messageToSend)
   }
+
+  useEffect(() => {
+    window.addEventListener('message', (event) => {
+      if (event.data.command === 'incomingMessage') {
+        setMessage(event.data.text)
+      }
+    })
+  }, [])
 
   return (
     <div className="App">

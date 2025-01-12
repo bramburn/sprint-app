@@ -4,14 +4,15 @@ node_modules
 .vscode-test/
 *.vsix
 .cursorrules
-
+webview-ui/{node_modules,coverage}
+webview-sidebar-ui/{node_modules,coverage}
 # Vitest and coverage
 coverage/
 *.coverage
 .nyc_output/
 
 # Node modules
-node_modules/
+**/node_modules
 
 # Build output
 out/
