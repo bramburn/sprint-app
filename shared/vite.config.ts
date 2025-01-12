@@ -6,7 +6,6 @@ export default mergeConfig(baseConfig, defineConfig({
   resolve: {
     alias: {
       '@shared': path.resolve(__dirname, './src'),
-
       '@extension': path.resolve(__dirname, '../src'),
       '@webview': path.resolve(__dirname, '../webview-settings/src'),
       '@sidebar': path.resolve(__dirname, '../webview-sidebar/src')
@@ -27,12 +26,21 @@ export default mergeConfig(baseConfig, defineConfig({
     }
   },
   build: {
-    outDir: '../out/shared',
-    emptyOutDir: true,
+    outDir: '../out/shared', // Output directory
+    emptyOutDir: true,       // Clear the output directory before building
+
     lib: {
-      entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'SharedLibrary',
-      fileName: (format) => `index.${format}.js`
+      entry: path.resolve(__dirname, 'src/index.ts'), // Entry point
+      name: 'SharedLibrary',                         // Global variable for UMD builds
+      fileName: () => `index.js`                     // Fixed file name for all formats
+    },
+
+    rollupOptions: {
+      output: {
+        entryFileNames: `index.js`,     // Use a single file name for the entry point
+        chunkFileNames: `index.js`,     // Use a single file name for chunks
+        assetFileNames: `[name].[ext]`  // Keep asset names clean (e.g., styles.css)
+      }
     }
   }
 }));

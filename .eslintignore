@@ -1,4 +1,7 @@
 node_modules/
+shared/node_modules/
+webview-settings/node_modules/
+webview-sidebar/node_modules/
 dist/
 .vscode/
 out/
