@@ -1,4 +1,7 @@
-import React from 'react'
+import React from 'react';
+import { useTheme } from '../theme/hooks/useTheme';
+import { ThemedWrapper } from '../theme/components/ThemedWrapper';
+import { ThemedButton } from '../theme/components/ThemedButton';
 
 export interface FooterProps {
   status: 'saved' | 'saving' | 'error'
@@ -6,6 +9,8 @@ export interface FooterProps {
 }
 
 const Footer: React.FC<FooterProps> = ({ status, onRetry }) => {
+  const { theme } = useTheme();
+
   const getStatusMessage = () => {
     switch (status) {
       case 'saved':
@@ -18,17 +23,34 @@ const Footer: React.FC<FooterProps> = ({ status, onRetry }) => {
   }
 
   return (
-    <footer className="footer">
-      <span>{getStatusMessage()}</span>
-      {status === 'error' && onRetry && (
-        <button 
-          className="btn btn-small ml-2" 
-          onClick={onRetry}
+    <ThemedWrapper 
+      tagName="footer"
+      className="app-footer"
+      style={{
+        backgroundColor: theme.colors.listHoverBackground,
+        borderTop: `1px solid ${theme.colors.border}`
+      }}
+    >
+      <div className="footer-content">
+        <span>{getStatusMessage()}</span>
+        {status === 'error' && onRetry && (
+          <ThemedButton 
+            variant="secondary"
+            className="ml-2"
+            onClick={onRetry}
+          >
+            Retry
+          </ThemedButton>
+        )}
+        <p>© {new Date().getFullYear()} Sprint App</p>
+        <ThemedButton 
+          variant="secondary"
+          onClick={() => window.open('https://github.com/your-repo', '_blank')}
         >
-          Retry
-        </button>
-      )}
-    </footer>
+          GitHub
+        </ThemedButton>
+      </div>
+    </ThemedWrapper>
   )
 }
 

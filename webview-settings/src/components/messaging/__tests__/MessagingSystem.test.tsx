@@ -1,7 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import { MessagingProvider, useMessaging, MessageActionType } from '../MessagingContext';
+import { MessagingProvider, useMessaging } from '../MessagingContext';
+import { MessageActionType } from '../messageTypes';
 import MessagingTab from '../MessagingTab';
 import MessageInput from '../MessageInput';
 import MessageList from '../MessageList';

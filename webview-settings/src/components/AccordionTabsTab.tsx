@@ -1,9 +1,14 @@
 import React from 'react'
+import { useTheme } from '../theme/hooks/useTheme';
+import { ThemedWrapper } from '../theme/components/ThemedWrapper';
+import { ThemedButton } from '../theme/components/ThemedButton';
 import Accordion from './accordion/Accordion'
 import TabContainer from './tabs/TabContainer'
 import './AccordionTabsTab.css'
 
-const AccordionTabsTab: React.FC = () => {
+export const AccordionTabsTab: React.FC = () => {
+  const { theme } = useTheme();
+
   const accordionItems = [
     {
       title: 'Getting Started',
@@ -96,7 +101,21 @@ const AccordionTabsTab: React.FC = () => {
   ]
 
   return (
-    <div className="accordion-tabs-container">
+    <ThemedWrapper 
+      className="accordion-tabs-container"
+      style={{
+        backgroundColor: theme.colors.editorBackground,
+        color: theme.colors.editorForeground
+      }}
+    >
+      <div className="accordion-tabs-header">
+        <ThemedButton 
+          variant="secondary"
+          className="accordion-tab-toggle"
+        >
+          Toggle Accordion
+        </ThemedButton>
+      </div>
       <section>
         <h2>Accordion Section</h2>
         <Accordion items={accordionItems} />
@@ -106,8 +125,6 @@ const AccordionTabsTab: React.FC = () => {
         <h2>Tabs Section</h2>
         <TabContainer tabs={tabItems} />
       </section>
-    </div>
+    </ThemedWrapper>
   )
 }
-
-export default AccordionTabsTab

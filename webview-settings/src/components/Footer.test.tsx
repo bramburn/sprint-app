@@ -4,6 +4,11 @@ import { describe, it, expect, vi } from 'vitest'
 import Footer from './Footer'
 
 describe('Footer Component', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<Footer status="saved" />)
+    expect(container).toBeTruthy()
+  })
+
   it('renders saved status', () => {
     render(<Footer status="saved" />)
     expect(screen.getByText('Saved ✓')).toBeInTheDocument()

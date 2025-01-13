@@ -1,29 +1,51 @@
-import React from 'react'
+import React from 'react';
+import { useTheme } from '../theme/hooks/useTheme';
+import { ThemedWrapper } from '../theme/components/ThemedWrapper';
 
 export interface SectionProps {
-  title: string
-  description?: string
-  children: React.ReactNode
-  className?: string
+  children: React.ReactNode;
+  title: string;
+  className?: string;
+  description?: string;  // Optional description
 }
 
-const Section: React.FC<SectionProps> = ({ 
+export const Section: React.FC<SectionProps> = ({ 
   title, 
-  description, 
-  children, 
-  className = '' 
+  children,
+  className,
+  description
 }) => {
+  const { theme } = useTheme();
+
   return (
-    <div className={`section ${className}`}>
-      <h2 className="section-header">{title}</h2>
-      {description && (
-        <p className="section-description">{description}</p>
-      )}
+    <ThemedWrapper 
+      className={`section-container ${className}`}
+      style={{
+        backgroundColor: theme.colors.editorBackground,
+        borderBottom: `1px solid ${theme.colors.border}`
+      }}
+    >
+      <div className="section-header">
+        <h2 
+          style={{ 
+            color: theme.colors.editorForeground 
+          }}
+        >
+          {title}
+        </h2>
+        {description && (
+          <p 
+            style={{ 
+              color: theme.colors.editorForeground 
+            }}
+          >
+            {description}
+          </p>
+        )}
+      </div>
       <div className="section-content">
         {children}
       </div>
-    </div>
-  )
-}
-
-export default Section
+    </ThemedWrapper>
+  );
+};

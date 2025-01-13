@@ -1,4 +1,6 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { ThemedWrapper } from '../../theme/components/ThemedWrapper';
+import { ThemedButton } from '../../theme/components/ThemedButton';
 import './ErrorBoundary.css';
 
 interface Props {
@@ -9,7 +11,6 @@ interface Props {
 interface State {
   hasError: boolean;
   error?: Error;
-  errorInfo?: ErrorInfo;
 }
 
 class ErrorBoundary extends Component<Props, State> {
@@ -18,38 +19,42 @@ class ErrorBoundary extends Component<Props, State> {
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error: Error) {
+  static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // Log the error to an error reporting service
-    console.error('Messaging Error:', error, errorInfo);
-    this.setState({ errorInfo });
+    console.error('Uncaught error:', error, errorInfo);
   }
 
-  handleRetry = () => {
-    this.setState({ hasError: false, error: undefined, errorInfo: undefined });
+  handleReset = () => {
+    this.setState({ hasError: false, error: undefined });
   }
 
   render() {
     if (this.state.hasError) {
-      // Custom error fallback UI
       return (
-        <div className="error-boundary">
-          <h2>Something went wrong in the Messaging System</h2>
-          <details>
-            <summary>Click for error details</summary>
-            <p>{this.state.error?.toString()}</p>
-            <pre>{this.state.errorInfo?.componentStack}</pre>
-          </details>
-          <button onClick={this.handleRetry}>
-            Try again
-          </button>
-        </div>
+        <ThemedWrapper 
+          className="error-boundary"
+          style={{ 
+            padding: '20px', 
+            textAlign: 'center' 
+          }}
+        >
+          <h2>Something went wrong</h2>
+          <p>{this.state.error?.message}</p>
+          <ThemedButton 
+            variant="secondary"
+            onClick={this.handleReset}
+          >
+            Try Again
+          </ThemedButton>
+        </ThemedWrapper>
       );
     }
 
     return this.props.children;
   }
 }
+
+export default ErrorBoundary;

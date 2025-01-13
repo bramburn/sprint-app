@@ -1,9 +1,19 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
-import Section from './Section'
+import { Section } from './Section'
 
 describe('Section Component', () => {
+  it('renders without crashing', () => {
+    const { container } = render(
+      <Section 
+        title="Test Section" 
+        children={<div>Test Content</div>} 
+      />
+    )
+    expect(container).toBeTruthy()
+  })
+
   it('renders title and description', () => {
     render(
       <Section 

@@ -1,12 +1,15 @@
 import React, { useState, useCallback } from 'react'
-import { useVSCode } from '@sprint-app/shared/react/hooks/vscode-hooks'
+import { useVSCode } from '@sprint-app/shared/react/hooks/vscode-hooks';
 import DebugTab from './components/DebugTab'
-import Sidebar from './components/Sidebar'
-import Section from './components/Section'
+import Sidebar, { SidebarItem } from './components/Sidebar'
+import { Section } from './components/Section'
 import Footer from './components/Footer'
 import FieldFormsTab from './components/FieldFormsTab'
-import AccordionTabsTab from './components/AccordionTabsTab'
+import { AccordionTabsTab } from './components/AccordionTabsTab'
 import MessagingTab from './components/messaging/MessagingTab'
+import { ThemeSettings } from './pages/ThemeSettings'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { useTheme } from './theme/hooks/useTheme'
 
 // Define interfaces for our settings
 interface AccountSettings {
@@ -26,6 +29,7 @@ interface AppSettings {
 
 const App: React.FC = () => {
   const vscode = useVSCode()
+  const { theme } = useTheme()
   const [activeTab, setActiveTab] = useState('general')
   const [savedStatus, setSavedStatus] = useState<'saved' | 'saving' | 'error'>('saved')
   const [settings, setSettings] = useState<AppSettings>({
@@ -43,15 +47,52 @@ const App: React.FC = () => {
     }
   })
 
-  const sidebarItems = [
-    { label: 'General', id: 'general' },
-    { label: 'Field Forms', id: 'field-forms' },
-    { label: 'Accordion & Tabs', id: 'accordion-tabs' },
-    { label: 'Models', id: 'models' },
-    { label: 'Features', id: 'features' },
-    { label: 'Beta', id: 'beta' },
-    { label: 'Messaging', id: 'messaging' },
-    { label: 'Debug', id: 'debug' }
+  const sidebarItems: SidebarItem[] = [
+    { 
+      label: 'General', 
+      id: 'general',
+      onClick: () => setActiveTab('general')
+    },
+    { 
+      label: 'Field Forms', 
+      id: 'field-forms',
+      onClick: () => setActiveTab('field-forms')
+    },
+    { 
+      label: 'Accordion & Tabs', 
+      id: 'accordion-tabs',
+      onClick: () => setActiveTab('accordion-tabs')
+    },
+    { 
+      label: 'Models', 
+      id: 'models',
+      onClick: () => setActiveTab('models')
+    },
+    { 
+      label: 'Features', 
+      id: 'features',
+      onClick: () => setActiveTab('features')
+    },
+    { 
+      label: 'Beta', 
+      id: 'beta',
+      onClick: () => setActiveTab('beta')
+    },
+    { 
+      label: 'Messaging', 
+      id: 'messaging',
+      onClick: () => setActiveTab('messaging')
+    },
+    { 
+      label: 'Theme Settings', 
+      id: 'theme',
+      onClick: () => setActiveTab('theme')
+    },
+    { 
+      label: 'Debug', 
+      id: 'debug',
+      onClick: () => setActiveTab('debug')
+    }
   ]
 
   const handleSectionAction = useCallback((action: string) => {
@@ -193,6 +234,8 @@ const App: React.FC = () => {
         return <Section title="Beta">Beta features coming soon...</Section>
       case 'messaging':
         return <MessagingTab />
+      case 'theme':
+        return <ThemeSettings />
       case 'debug':
         return <DebugTab />
       default:
@@ -201,26 +244,53 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="app-container">
-      <Sidebar 
-        items={sidebarItems} 
-        activeTab={activeTab} 
-        onTabChange={setActiveTab} 
-      />
-      
-      <main className="main-content">
-        {renderMainContent()}
-        
-        <Footer 
-          status={savedStatus} 
-          onRetry={() => {
-            // Implement retry logic if needed
-            setSavedStatus('saving')
-            updateSettings(settings)
-          }} 
+    <Router>
+      <div 
+        className="app-container"
+        style={{
+          display: 'flex',
+          height: '100vh',
+          backgroundColor: theme.colors.editorBackground,
+          color: theme.colors.editorForeground
+        }}
+      >
+        <Sidebar 
+          items={sidebarItems} 
+          activeTab={activeTab} 
+          onTabChange={setActiveTab} 
         />
-      </main>
-    </div>
+        
+        <main 
+          className="main-content"
+          style={{
+            flex: 1,
+            overflowY: 'auto',
+            padding: '20px'
+          }}
+        >
+          <Routes>
+            <Route path="/general" element={renderMainContent()} />
+            <Route path="/field-forms" element={<FieldFormsTab />} />
+            <Route path="/accordion-tabs" element={<AccordionTabsTab />} />
+            <Route path="/models" element={<Section title="Models">Models settings coming soon...</Section>} />
+            <Route path="/features" element={<Section title="Features">Features settings coming soon...</Section>} />
+            <Route path="/beta" element={<Section title="Beta">Beta features coming soon...</Section>} />
+            <Route path="/messaging" element={<MessagingTab />} />
+            <Route path="/theme" element={<ThemeSettings />} />
+            <Route path="/debug" element={<DebugTab />} />
+            <Route path="/" element={renderMainContent()} />
+          </Routes>
+          <Footer 
+            status={savedStatus} 
+            onRetry={() => {
+              // Implement retry logic if needed
+              setSavedStatus('saving')
+              updateSettings(settings)
+            }} 
+          />
+        </main>
+      </div>
+    </Router>
   )
 }
 

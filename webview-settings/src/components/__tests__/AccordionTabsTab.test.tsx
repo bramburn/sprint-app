@@ -1,9 +1,20 @@
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
-import AccordionTabsTab from '../AccordionTabsTab'
+import { AccordionTabsTab } from '../AccordionTabsTab'
 
 describe('AccordionTabsTab Component', () => {
+  it('renders without crashing', () => {
+    const { container } = render(<AccordionTabsTab />)
+    expect(container).toBeTruthy()
+  })
+
+  it('renders accordion sections', () => {
+    render(<AccordionTabsTab />)
+    const accordionTitle = screen.getByText('Getting Started')
+    expect(accordionTitle).toBeTruthy()
+  })
+
   it('renders accordion sections', () => {
     render(<AccordionTabsTab />)
     

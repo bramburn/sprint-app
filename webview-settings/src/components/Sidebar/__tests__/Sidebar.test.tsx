@@ -5,9 +5,21 @@ import Sidebar from '../index'
 
 describe('Sidebar Component', () => {
   const mockItems = [
-    { label: 'General', id: 'general' },
-    { label: 'Models', id: 'models' },
-    { label: 'Features', id: 'features' }
+    { 
+      label: 'General', 
+      id: 'general', 
+      onClick: () => {} 
+    },
+    { 
+      label: 'Models', 
+      id: 'models', 
+      onClick: () => {} 
+    },
+    { 
+      label: 'Features', 
+      id: 'features', 
+      onClick: () => {} 
+    }
   ]
 
   const mockOnTabChange = vi.fn()
