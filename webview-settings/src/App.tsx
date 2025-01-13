@@ -6,6 +6,7 @@ import Section from './components/Section'
 import Footer from './components/Footer'
 import FieldFormsTab from './components/FieldFormsTab'
 import AccordionTabsTab from './components/AccordionTabsTab'
+import MessagingTab from './components/messaging/MessagingTab'
 
 // Define interfaces for our settings
 interface AccountSettings {
@@ -49,6 +50,7 @@ const App: React.FC = () => {
     { label: 'Models', id: 'models' },
     { label: 'Features', id: 'features' },
     { label: 'Beta', id: 'beta' },
+    { label: 'Messaging', id: 'messaging' },
     { label: 'Debug', id: 'debug' }
   ]
 
@@ -189,6 +191,8 @@ const App: React.FC = () => {
         return <Section title="Features">Features settings coming soon...</Section>
       case 'beta':
         return <Section title="Beta">Beta features coming soon...</Section>
+      case 'messaging':
+        return <MessagingTab />
       case 'debug':
         return <DebugTab />
       default:

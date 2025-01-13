@@ -1,0 +1,52 @@
+:root {
+  --sent-message-bg: #007bff;
+  --received-message-bg: #e9ecef;
+  --message-text-color: white;
+  --received-text-color: black;
+}
+
+.message {
+  display: flex;
+  margin-bottom: 10px;
+  max-width: 80%;
+}
+
+.message.sent {
+  align-self: flex-end;
+  margin-left: auto;
+}
+
+.message.received {
+  align-self: flex-start;
+  margin-right: auto;
+}
+
+.message-content {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 12px;
+  border-radius: 12px;
+  position: relative;
+}
+
+.message.sent .message-content {
+  background-color: var(--sent-message-bg);
+  color: var(--message-text-color);
+}
+
+.message.received .message-content {
+  background-color: var(--received-message-bg);
+  color: var(--received-text-color);
+}
+
+.message-text {
+  word-wrap: break-word;
+  max-width: 250px;
+}
+
+.message-timestamp {
+  font-size: 0.7em;
+  margin-top: 4px;
+  opacity: 0.7;
+  align-self: flex-end;
+}
