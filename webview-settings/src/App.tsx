@@ -4,6 +4,8 @@ import DebugTab from './components/DebugTab'
 import Sidebar from './components/Sidebar'
 import Section from './components/Section'
 import Footer from './components/Footer'
+import FieldFormsTab from './components/FieldFormsTab'
+import AccordionTabsTab from './components/AccordionTabsTab'
 
 // Define interfaces for our settings
 interface AccountSettings {
@@ -42,6 +44,8 @@ const App: React.FC = () => {
 
   const sidebarItems = [
     { label: 'General', id: 'general' },
+    { label: 'Field Forms', id: 'field-forms' },
+    { label: 'Accordion & Tabs', id: 'accordion-tabs' },
     { label: 'Models', id: 'models' },
     { label: 'Features', id: 'features' },
     { label: 'Beta', id: 'beta' },
@@ -175,6 +179,10 @@ const App: React.FC = () => {
             </Section>
           </div>
         )
+      case 'field-forms':
+        return <FieldFormsTab />
+      case 'accordion-tabs':
+        return <AccordionTabsTab />
       case 'models':
         return <Section title="Models">Models settings coming soon...</Section>
       case 'features':

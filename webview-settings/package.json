@@ -17,7 +17,7 @@
     "serve:webview": "vite serve --outDir out/webview"
   },
   "dependencies": {
-    "@sprint-app/shared": "file:../shared",
+    "@sprint-app/shared": "file:../shared"
     
   },
   "devDependencies": {
