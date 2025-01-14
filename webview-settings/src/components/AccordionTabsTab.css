@@ -1,0 +1,30 @@
+.accordion-tabs-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.accordion-tabs-container section {
+  margin-bottom: 2rem;
+}
+
+.accordion-tabs-container h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 0.5rem;
+}
+
+.accordion-tabs-container h3,
+.accordion-tabs-container h4 {
+  margin-bottom: 0.5rem;
+}
+
+.accordion-tabs-container ul {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.accordion-tabs-container li {
+  margin-bottom: 0.5rem;
+}

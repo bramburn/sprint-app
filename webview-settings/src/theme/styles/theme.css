@@ -1,0 +1,41 @@
+:root {
+  /* Theme Variables */
+  --theme-primary: var(--vscode-button-background);
+  --theme-secondary: var(--vscode-button-secondaryBackground);
+  
+  /* Typography */
+  --theme-font-family: var(--vscode-font-family);
+  --theme-font-size: var(--vscode-font-size);
+  
+  /* Spacing */
+  --theme-spacing-unit: 8px;
+  --theme-border-radius: 4px;
+}
+
+body {
+  background-color: var(--vscode-editor-background);
+  color: var(--vscode-editor-foreground);
+  font-family: var(--theme-font-family);
+}
+
+/* Theme-aware elements */
+.button {
+  background-color: var(--vscode-button-background);
+  color: var(--vscode-button-foreground);
+  border: 1px solid var(--vscode-contrastBorder);
+  border-radius: var(--theme-border-radius);
+}
+
+.button:hover {
+  background-color: var(--vscode-button-hoverBackground);
+}
+
+.input {
+  background-color: var(--vscode-input-background);
+  color: var(--vscode-input-foreground);
+  border: 1px solid var(--vscode-input-border);
+}
+
+.input:focus {
+  border-color: var(--vscode-focusBorder);
+}

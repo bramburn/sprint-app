@@ -1,5 +1,6 @@
 ./ contains npm package and containts ./src for the vscode extension
 ./webview-ui contains npm package and containts ./src for the webview. output goes to ./out/webview/
 ./webview-sidebar contains npm package and containts ./src for the webview sidebar. output goes to ./out/webview-sidebar/
-we are using vitest for testing.
+we are using vitest for testing, we don't need to set it up again.
 We are using ./shared/ to hold shared data types, interfaces, classes, and functions between the webview and vscode extension. we need to ensure we declare those aliases in tsconfig.
+we are using monorepo for the vscode extesion, we have package.json in the root folder which setups the monorepo with workspaces of ./shared ./webview-settings ./webview-sidebar. The same is done with tsconfig.json. so check the root file for information on aliases setup.

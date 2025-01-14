@@ -1,348 +1,231 @@
-# **Implementing Sprint AI Settings Using Fast v2 for React**
+### 1. **Element Structure**
 
-This guide walks you through implementing the **Sprint AI Settings** page using **Fast v2** for React. The page will have four tabs:
-1. **Debug Page**: Displays different typography styles.
-2. **Field Forms**: Showcases various input fields.
-3. **Accordion and Tabs**: Includes collapsible sections and tabbed navigation.
-4. **Messaging Interface**: A chat-like interface for sending and displaying messages.
-
-We will follow the provided directory structure to ensure scalability and maintainability.
-
----
-
-## **Directory Structure**
-
-```
-webview-settings/
-├── src/
-│   ├── components/
-│   │   ├── common/                  # Common reusable components
-│   │   │   ├── Button.tsx
-│   │   │   ├── InputField.tsx
-│   │   │   └── Typography.tsx
-│   │   ├── debug/                   # Debug tab components
-│   │   │   └── DebugPage.tsx
-│   │   ├── forms/                   # Field forms tab components
-│   │   │   └── FormsPage.tsx
-│   │   ├── layout/                  # Layout components (e.g., accordion, tabs)
-│   │   │   ├── Accordion.tsx
-│   │   │   ├── Tabs.tsx
-│   │   │   └── TabsPage.tsx
-│   │   ├── messaging/               # Messaging tab components
-│   │   │   ├── ChatPage.tsx
-│   │   │   ├── ChatInput.tsx
-│   │   │   └── Message.tsx
-│   ├── context/                     # Context providers for state management
-│   │   └── VSCodeContext.tsx        # VS Code API context provider
-│   ├── App.tsx                      # Main application component
-│   ├── index.tsx                    # Entry point for the application
-│   └── index.css                    # Global styles
-├── public/
-│    └── index.html                  # Main HTML file for Vite
-├── package.json                     # Project metadata and dependencies
-└── tsconfig.json                    # TypeScript configuration
-```
+#### Visible Elements:
+- **Left Sidebar**
+  - **Sidebar Header**: "Cursor Settings"
+  - **Sidebar Items**: 
+    - "General"
+    - "Models"
+    - "Features"
+    - "Beta"
+- **Main Content Area**
+  - **Section: Account**
+    - **Account Type**: "Pro"
+    - **Email**: "You are currently signed in with nitrogen@gmail.com."
+    - **Buttons**: 
+      - "Manage"
+      - "Log out"
+  - **Section: VS Code Import**
+    - **Description**: "Instantly use all of your extensions, settings, and keybindings."
+    - **Button**: "+ Import"
+  - **Section: Rules for AI**
+    - **Description**: "These rules get shown to the AI on all chats and Ctrl-K sessions."
+    - **Content Box**: Contains several rules in a bordered box.
+  - **Section: Include .cursorrules file**
+    - **Checkbox**: "If off, we will not include any .cursorrules files in your Rules for AI."
+  - **Footer**: "Saved ✓" text in the bottom right corner.
 
 ---
 
-## **Implementation**
+### 2. **Component Tree Diagram**
 
-### **1. Setting Up Tab Navigation**
-
-#### File: `components/common/Tabs.tsx`
-A reusable tab navigation component.
-
-```tsx
-import React from 'react';
-
-interface Tab {
-  label: string;
-  onClick: () => void;
-  isActive: boolean;
-}
-
-interface TabsProps {
-  tabs: Tab[];
-}
-
-const Tabs: React.FC<TabsProps> = ({ tabs }) => {
-  return (
-    <div className="flex border-b">
-      {tabs.map((tab, index) => (
-        <button
-          key={index}
-          className={`px-4 py-2 ${
-            tab.isActive ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'
-          }`}
-          onClick={tab.onClick}
-        >
-          {tab.label}
-        </button>
-      ))}
-    </div>
-  );
-};
-
-export default Tabs;
+```
+App
+├── Sidebar
+│   ├── SidebarHeader
+│   ├── SidebarItem (iterable)
+├── MainContent
+    ├── Section (reusable component)
+    │   ├── SectionHeader
+    │   ├── Content (varies by section)
+    │   ├── Button (optional, iterable)
+    ├── Footer
 ```
 
 ---
 
-### **2. Debug Page (Typography Showcase)**
+### 3. **Component Breakdown**
 
-#### File: `components/debug/DebugPage.tsx`
-Displays various typography styles.
+#### **Components and Props:**
+1. **`Sidebar`**:
+   - **Props**: `items` (array of sidebar entries)
+   - **Children**: A list of `SidebarItem` components.
+   - **Purpose**: Displays the navigational menu.
 
-```tsx
-import React from 'react';
+2. **`SidebarItem`**:
+   - **Props**: `label`, `isActive` (boolean)
+   - **Purpose**: Represents each sidebar item, highlighting the active one.
 
-const DebugPage: React.FC = () => {
-  return (
-    <div className="p-4">
-      <h1 className="text-4xl font-bold">H1 - Bold</h1>
-      <h2 className="text-3xl font-semibold">H2 - Semi-Bold</h2>
-      <h3 className="text-2xl font-medium">H3 - Medium</h3>
-      <p className="text-lg">This is a paragraph with normal text.</p>
-      <small className="text-sm text-gray-500">This is small text.</small>
-    </div>
-  );
-};
+3. **`MainContent`**:
+   - **Props**: None
+   - **Children**: A list of `Section` components and the footer.
+   - **Purpose**: Displays the main content area.
 
-export default DebugPage;
-```
+4. **`Section`**:
+   - **Props**: `title`, `description`, `children`
+   - **Purpose**: Represents a section in the main content with a title and optional content.
 
----
+5. **`Button`**:
+   - **Props**: `label`, `onClick`, `variant` (e.g., primary, secondary)
+   - **Purpose**: Reusable button.
 
-### **3. Field Forms Page**
+6. **`Checkbox`**:
+   - **Props**: `label`, `isChecked`, `onChange`
+   - **Purpose**: Toggles an option.
 
-#### File: `components/forms/FormsPage.tsx`
-Showcases various input fields.
-
-```tsx
-import React from 'react';
-import InputField from '../common/InputField';
-
-const FormsPage: React.FC = () => {
-  return (
-    <div className="p-4">
-      <h2 className="text-xl font-semibold mb-4">Field Forms</h2>
-      <InputField label="Username" placeholder="Enter your username" />
-      <InputField label="Email" placeholder="Enter your email" type="email" />
-      <InputField label="Password" placeholder="Enter your password" type="password" />
-    </div>
-  );
-};
-
-export default FormsPage;
-```
-
-#### File: `components/common/InputField.tsx`
-Reusable input field component.
-
-```tsx
-import React from 'react';
-
-interface InputFieldProps {
-  label: string;
-  placeholder?: string;
-  type?: string;
-}
-
-const InputField: React.FC<InputFieldProps> = ({ label, placeholder, type = 'text' }) => {
-  return (
-    <div className="mb-4">
-      <label className="block text-sm font-medium mb-1">{label}</label>
-      <input
-        type={type}
-        placeholder={placeholder}
-        className="w-full px-3 py-2 border rounded"
-      />
-    </div>
-  );
-};
-
-export default InputField;
-```
+7. **`Footer`**:
+   - **Props**: `text`
+   - **Purpose**: Displays footer text.
 
 ---
 
-### **4. Accordion and Tabs Page**
+### 4. **CSS Considerations**
 
-#### File: `components/layout/TabsPage.tsx`
-Includes an accordion and tabs.
+#### **Layout Techniques**:
+- **Sidebar**:
+  - Use `flex` or `grid` for vertical alignment.
+  - Fixed width with responsive collapse for smaller screens.
+- **Main Content**:
+  - Use `flex` or `grid` for spacing between sections.
+  - Ensure responsiveness using `max-width`, `padding`, and `gap`.
 
-```tsx
-import React from 'react';
-import Accordion from './Accordion';
-
-const TabsPage: React.FC = () => {
-  return (
-    <div className="p-4">
-      <h2 className="text-xl font-semibold mb-4">Accordion and Tabs</h2>
-      <Accordion title="Section 1">
-        <p>This is the content of Section 1.</p>
-      </Accordion>
-      <Accordion title="Section 2">
-        <p>This is the content of Section 2.</p>
-      </Accordion>
-    </div>
-  );
-};
-
-export default TabsPage;
-```
-
-#### File: `components/layout/Accordion.tsx`
-Reusable accordion component.
-
-```tsx
-import React, { useState } from 'react';
-
-interface AccordionProps {
-  title: string;
-  children: React.ReactNode;
-}
-
-const Accordion: React.FC<AccordionProps> = ({ title, children }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div className="mb-4 border rounded">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full text-left px-4 py-2 bg-gray-200"
-      >
-        {title}
-      </button>
-      {isOpen && <div className="px-4 py-2">{children}</div>}
-    </div>
-  );
-};
-
-export default Accordion;
-```
+#### **Styling Suggestions**:
+- Use Tailwind's **utility classes**:
+  - Sidebar: `flex flex-col w-64 h-screen bg-gray-900 text-white`
+  - Buttons: `bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600`
+  - Sections: `mb-6 p-4 border border-gray-700 rounded-md`
+  - Checkbox: `flex items-center space-x-2`
 
 ---
 
-### **5. Messaging Interface**
+### 5. **Iterable Elements**
 
-#### File: `components/messaging/ChatPage.tsx`
-A simple messaging interface.
+#### **Sidebar Items**:
+- Represented as an array of objects:
+  ```js
+  const sidebarItems = [
+    { label: "General", isActive: true },
+    { label: "Models", isActive: false },
+    { label: "Features", isActive: false },
+    { label: "Beta", isActive: false },
+  ];
+  ```
 
-```tsx
-import React, { useState } from 'react';
-import ChatInput from './ChatInput';
-import Message from './Message';
+#### **Buttons or Rules**:
+- Buttons and rules can be iterated over using a `.map()` statement.
 
-const ChatPage: React.FC = () => {
-  const [messages, setMessages] = useState<string[]>([]);
+---
 
-  const handleSendMessage = (message: string) => {
-    setMessages((prev) => [...prev, message]);
-  };
+### 6. **Accessibility**
 
+#### Recommendations:
+- **ARIA roles**: Use `role="navigation"` for the sidebar and `role="main"` for the content area.
+- **Alt text**: Provide alt text for buttons/icons.
+- **Focus states**: Ensure buttons and links are keyboard-navigable and have clear focus styles (`outline`).
+
+---
+
+### 7. **Sample React Component**
+
+Here’s the React component based on the analysis:
+
+```jsx type=react
+import React from "react";
+
+const Sidebar = ({ items }) => {
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-semibold mb-4">Messaging Interface</h2>
-      <div className="mb-4 border rounded p-4 h-64 overflow-y-auto">
-        {messages.map((msg, index) => (
-          <Message key={index} text={msg} />
+    <nav className="flex flex-col w-64 h-screen bg-gray-900 text-white p-4">
+      <h2 className="text-lg font-bold mb-4">Cursor Settings</h2>
+      <ul>
+        {items.map((item, index) => (
+          <li
+            key={index}
+            className={`p-2 rounded hover:bg-gray-700 ${
+              item.isActive ? "bg-gray-700" : ""
+            }`}
+          >
+            {item.label}
+          </li>
         ))}
-      </div>
-      <ChatInput onSendMessage={handleSendMessage} />
-    </div>
+      </ul>
+    </nav>
   );
 };
 
-export default ChatPage;
-```
-
-#### File: `components/messaging/ChatInput.tsx`
-Input field for sending messages.
-
-```tsx
-import React, { useState } from 'react';
-
-interface ChatInputProps {
-  onSendMessage: (message: string) => void;
-}
-
-const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
-  const [message, setMessage] = useState('');
-
-  const handleSubmit = () => {
-    if (message.trim()) {
-      onSendMessage(message);
-      setMessage('');
-    }
-  };
-
+const Section = ({ title, description, children }) => {
   return (
-    <div className="flex items-center space-x-2">
-      <input
-        type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder="Type a message"
-        className="flex-grow px-3 py-2 border rounded"
-      />
-      <button onClick={handleSubmit} className="bg-blue-500 text-white px-4 py-2 rounded">
-        Send
-      </button>
+    <div className="mb-6 p-4 border border-gray-700 rounded-md">
+      <h3 className="text-lg font-semibold mb-2">{title}</h3>
+      <p className="text-gray-400 mb-4">{description}</p>
+      {children}
     </div>
   );
 };
 
-export default ChatInput;
-```
-
----
-
-### **6. Main Application**
-
-#### File: `App.tsx`
-Combines all tabs into a single application with navigation.
-
-```tsx
-import React, { useState } from 'react';
-import Tabs from './components/common/Tabs';
-import DebugPage from './components/debug/DebugPage';
-import FormsPage from './components/forms/FormsPage';
-import TabsPage from './components/layout/TabsPage';
-import ChatPage from './components/messaging/ChatPage';
+const MainContent = () => {
+  return (
+    <main className="flex-1 p-6 bg-gray-800 text-white">
+      <Section
+        title="Account"
+        description="You are currently signed in with nitrogen@gmail.com."
+      >
+        <div className="flex space-x-4">
+          <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            Manage
+          </button>
+          <button className="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600">
+            Log out
+          </button>
+        </div>
+      </Section>
+      <Section
+        title="VS Code Import"
+        description="Instantly use all of your extensions, settings, and keybindings."
+      >
+        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+          + Import
+        </button>
+      </Section>
+      <Section
+        title="Rules for AI"
+        description="These rules get shown to the AI on all chats and Ctrl-K sessions."
+      >
+        <div className="p-4 border border-gray-700 rounded bg-gray-900">
+          <p>Always respond in English...</p>
+          {/* Add more rules as needed */}
+        </div>
+      </Section>
+      <Section
+        title="Include .cursorrules file"
+        description="If off, we will not include any .cursorrules files in your Rules for AI."
+      >
+        <div className="flex items-center space-x-2">
+          <input type="checkbox" className="h-4 w-4" />
+          <label>If off, we will not include any .cursorrules files...</label>
+        </div>
+      </Section>
+      <footer className="text-right text-gray-400 mt-6">Saved ✓</footer>
+    </main>
+  );
+};
 
 const App = () => {
-  const [activeTab, setActiveTab] = useState(0);
-
-  const tabs = [
-    { label: 'Debug', component: <DebugPage /> },
-    { label: 'Forms', component: <FormsPage /> },
-    { label: 'Layout', component: <TabsPage /> },
-    { label: 'Messaging', component: <ChatPage /> },
+  const sidebarItems = [
+    { label: "General", isActive: true },
+    { label: "Models", isActive: false },
+    { label: "Features", isActive: false },
+    { label: "Beta", isActive: false },
   ];
 
   return (
-    <>
-      <Tabs tabs={tabs.map((tab, index) => ({
-        label: tab.label,
-        isActive: activeTab === index,
-        onClick: () => setActiveTab(index),
-      }))} />
-      {tabs[activeTab].component}
-    </>
+    <div className="flex h-screen">
+      <Sidebar items={sidebarItems} />
+      <MainContent />
+    </div>
   );
 };
 
 export default App;
 ```
 
----
-
-## **Conclusion**
-
-This implementation provides a modular structure for building the Sprint AI Settings page using Fast v2 and React. Each tab is implemented as a standalone component with reusable sub-components for scalability and maintainability. By following this guide, you can easily extend or modify the functionality as needed!
-
-Citations:
-[1] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/35208055/61f8988f-9a64-433d-b89c-3e4c0699f2e3/package.json
-[2] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/35208055/4dbda9ce-6e13-4403-a233-3d07c3d94aef/App.tsx
-[3] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/35208055/29b41636-4e66-4d2e-a3c0-6cf4c16b157c/vscode-api.ts
+This structure is clean, modular, and responsive. Tailwind CSS is used for styling, and the layout adapts well to varying screen sizes. Let me know if you'd like further adjustments!

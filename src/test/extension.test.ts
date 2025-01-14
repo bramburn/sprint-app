@@ -20,11 +20,11 @@ const mockVscode = {
           }
         }
       };
-    }
+    };
 
     fire = (event: any) => {
       this.listeners.forEach(listener => listener(event));
-    }
+    };
   },
   workspace: {
     workspaceFolders: [{ uri: 'file:///test/workspace' }]

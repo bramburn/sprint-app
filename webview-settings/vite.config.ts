@@ -27,10 +27,7 @@ export default mergeConfig(baseConfig as UserConfig, defineConfig({
         entryFileNames: `[name].js`,
         chunkFileNames: `[name].js`,
         assetFileNames: `[name].[ext]`,
-        manualChunks(id) {
-          if (id.includes('node_modules/react')) return 'react';
-          if (id.includes('node_modules')) return 'vendor';
-        }
+        manualChunks: () => 'everything',
       }
     }
   },

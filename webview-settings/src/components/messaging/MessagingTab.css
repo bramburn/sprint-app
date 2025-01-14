@@ -1,0 +1,22 @@
+.messaging-tab {
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+  max-width: 500px;
+  margin: 0 auto;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.messaging-header {
+  background-color: #f1f3f5;
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #ced4da;
+}
+
+.messaging-header h2 {
+  margin: 0;
+  color: #495057;
+}

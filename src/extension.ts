@@ -1,124 +1,167 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { MessageCommand } from '@sprint-app/shared/messages/types';
+import * as crypto from 'crypto';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
     console.log('Congratulations, your extension "sprint-ai" is now active!');
 
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with registerCommand
-    // The commandId parameter must match the command field in package.json
-    const disposable = vscode.commands.registerCommand('sprint-ai.helloWorld', () => {
-        // The code you place here will be executed every time your command is executed
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World from Sprint AI!');
+    // Webview panel management
+    let currentPanel: vscode.WebviewPanel | undefined = undefined;
+
+    // Command to show settings webview
+    const showWebviewCommand = vscode.commands.registerCommand('sprint-ai.showWebview', () => {
+        const columnToShowIn = vscode.window.activeTextEditor
+            ? vscode.window.activeTextEditor.viewColumn
+            : vscode.ViewColumn.One;
+
+        if (currentPanel) {
+            // If we already have a panel, show it in the target column
+            currentPanel.reveal(columnToShowIn ?? vscode.ViewColumn.One);
+        } else {
+            // Create a new panel
+            currentPanel = vscode.window.createWebviewPanel(
+                'sprintAISettings',
+                'Sprint AI Settings',
+                columnToShowIn ?? vscode.ViewColumn.One,
+                {
+                    enableScripts: true,
+                    retainContextWhenHidden: true
+                }
+            );
+
+            // Set webview HTML
+            currentPanel.webview.html = getWebviewContent(currentPanel.webview, context);
+
+            // Handle messages from the webview
+            currentPanel.webview.onDidReceiveMessage(
+                (message) => {
+                    switch (message.command) {
+                        case MessageCommand.READY:
+                            handleReadyMessage(message, currentPanel!);
+                            break;
+                        case MessageCommand.SETTINGS_UPDATE:
+                            handleSettingsUpdate(message, context);
+                            break;
+                        default:
+                            console.warn('Unknown message command:', message.command);
+                    }
+                },
+                undefined,
+                context.subscriptions
+            );
+
+            // Handle panel closure
+            currentPanel.onDidDispose(
+                () => {
+                    currentPanel = undefined;
+                },
+                null,
+                context.subscriptions
+            );
+        }
     });
 
-    // Create webview URIs using the proper VS Code API
+    context.subscriptions.push(showWebviewCommand);
 
+    // Listen for theme changes
+    
+}
 
-    context.subscriptions.push(
-        vscode.commands.registerCommand('sprint-ai.showWebview', () => {
-            const panel = vscode.window.createWebviewPanel(
-                'webview',
-                'Settings Page',
-                vscode.ViewColumn.One,
-                { enableScripts: true }
-            );
-            const webviewDir = vscode.Uri.joinPath(context.extensionUri, 'out', 'webview');
-            const uri = panel.webview.asWebviewUri(webviewDir);
-            vscode.window.showInformationMessage(uri.toString());
-            panel.webview.options = {
-                enableScripts: true,
-                localResourceRoots: [webviewDir]
-            };
-            const webviewCss = vscode.Uri.joinPath(context.extensionUri, 'out', 'webview', 'index.css');
-            const webviewJs = vscode.Uri.joinPath(context.extensionUri, 'out', 'webview', 'index.js');
-            const cssUri = panel.webview.asWebviewUri(webviewCss);
-            const jsUri = panel.webview.asWebviewUri(webviewJs);
-            panel.webview.html = getWebviewContent(uri.toString(), panel.webview.cspSource, cssUri.toString(), jsUri.toString());
+function handleReadyMessage(message: any, panel: vscode.WebviewPanel) {
+    // Get the current VS Code color theme
+    const currentColorTheme = vscode.window.activeColorTheme;
+    
+    
+    
 
-            panel.webview.onDidReceiveMessage((message) => {
-                switch (message.command) {
-                    case 'ready':
-                        console.log('Webview is ready, sending initial configuration');
-                        // Send initial configuration
-                        panel.webview.postMessage({
-                            command: 'config',
-                            payload: {
-                                theme: 'default',
-                                language: 'en',
-                                featureFlags: {
-                                    experimental: false
-                                }
-                            }
-                        });
-                        break;
-                    case 'updateConfig':
-                        console.log('Configuration update received:', message.payload);
-                        // Optional: Persist configuration or perform additional actions
-                        break;
-                    case 'greeting':
-                        // wait 2 seconds
-                        setTimeout(() => {
-                            panel.webview.postMessage({
-                                command: 'incomingMessage',
-                                text: 'Hello from React at ' + new Date().toLocaleTimeString() + '!'
-                            });
-                        }, 2000);
-                        break;
-                    case 'close':
-                        panel.dispose();
-                        break;
-                    default:
-                        console.error('Unknown command:', message.command);
+    // Send initial settings
+    panel.webview.postMessage({
+        command: MessageCommand.SETTINGS_UPDATE,
+        timestamp: Date.now(),
+        id: `initial-settings-${Date.now()}`,
+        payload: {
+            settings: {
+                account: {
+                    email: 'user@example.com',
+                    accountType: 'free'
+                },
+                aiRules: {
+                    rules: [
+                        'Always be helpful',
+                        'Provide clear explanations'
+                    ],
+                    includeCursorRules: true
                 }
-            });
-        })
+            },
+            version: 1
+        }
+    });
+
+    // Send current theme
+   
+}
+
+function handleSettingsUpdate(message: any, context: vscode.ExtensionContext) {
+    console.log('Settings update received:', message.payload);
+    
+    // Persist settings using extension context
+    context.globalState.update('sprintAISettings', message.payload.settings);
+}
+
+function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionContext): string {
+    // Get the local resource root path for our webview
+    const webviewDir = vscode.Uri.joinPath(
+        vscode.Uri.file(context.extensionPath), 
+        'out', 
+        'webview-settings'
     );
 
-    context.subscriptions.push(disposable);
-}
+    // Generate a nonce to allow specific script execution
+    const nonce = generateNonce();
 
-// This method is called when your extension is deactivated
-export function deactivate() { }
+    // Convert to webview URI
+    const baseUri = webview.asWebviewUri(webviewDir);
+    const scriptUri = webview.asWebviewUri(
+        vscode.Uri.joinPath(webviewDir, 'index.js')
+    );
+    const styleUri = webview.asWebviewUri(
+        vscode.Uri.joinPath(webviewDir, 'index.css')
+    );
 
-
-
-function getNonce(): string {
-    let text = '';
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 32; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-}
-
-function getWebviewContent(baseUri: string, cspSource: string, styleUri: string, scriptUri: string): string {
-
-    const nonce = getNonce();
-
-    return `<!DOCTYPE html>
-    <html lang="en">
+    return `
+        <!DOCTYPE html>
+        <html lang="en">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${cspSource}; script-src 'nonce-${nonce}';">
-            <link rel="stylesheet" type="text/css" href="${styleUri}">
-            <title>Sprint AI</title>
-            <script>
-            window.baseUri = "${baseUri}";
-            </script>
+            <title>Sprint AI Settings</title>
+            <meta http-equiv="Content-Security-Policy" content="default-src 'none'; 
+                style-src ${baseUri} 'unsafe-inline'; 
+                script-src 'nonce-${nonce}';
+                img-src ${baseUri} data:;
+                connect-src vscode-webview:">
+            <link href="${styleUri}" rel="stylesheet">
         </head>
         <body>
             <div id="root"></div>
             <script nonce="${nonce}" src="${scriptUri}"></script>
         </body>
-    </html>`;
+        </html>
+    `;
+}
 
+// Utility function to generate a cryptographically secure nonce
+function generateNonce(): string {
+    return Array.from(crypto.getRandomValues(new Uint8Array(16)))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+}
+
+export function deactivate() {
+    // Cleanup logic if needed
 }

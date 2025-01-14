@@ -15,11 +15,11 @@ export class EventEmitter<T> {
         }
       }
     };
-  }
+  };
 
   fire = (event: T): void => {
     this.listeners.forEach(listener => listener(event));
-  }
+  };
 }
 
 // Mock Disposable
@@ -95,7 +95,7 @@ export class Webview implements vscode.Webview {
     this._messageListeners.push(listener);
     return new Disposable(() => {
       const index = this._messageListeners.indexOf(listener);
-      if (index !== -1) this._messageListeners.splice(index, 1);
+      if (index !== -1) {this._messageListeners.splice(index, 1);}
     });
   }
 
@@ -114,7 +114,7 @@ export class WebviewView implements vscode.WebviewView {
     this._visibilityChangeListeners.push(listener);
     return new Disposable(() => {
       const index = this._visibilityChangeListeners.indexOf(listener);
-      if (index !== -1) this._visibilityChangeListeners.splice(index, 1);
+      if (index !== -1) {this._visibilityChangeListeners.splice(index, 1);}
     });
   }
 
