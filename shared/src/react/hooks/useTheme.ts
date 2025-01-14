@@ -1,33 +1,31 @@
-import { useState, useEffect, useCallback } from 'react';
+import { createContext, useContext } from 'react';
 import { 
   ThemeConfiguration, 
   createDefaultTheme,
   generateCSSVariables 
-} from '@sprint-app/shared/src/theme/types';
+} from '../../theme/types';
+// Theme context for global theme management
+export const ThemeContext = createContext<{
+  theme: ThemeConfiguration;
+  updateTheme: (newTheme?: Partial<ThemeConfiguration>) => void;
+}>({
+  theme: createDefaultTheme(),
+  updateTheme: () => {}
+});
 
-/**
- * Theme hook for managing theme state and synchronization
- */
+
+// Custom hook to use theme in components
 export function useTheme() {
-  const [theme, setTheme] = useState<ThemeConfiguration>(createDefaultTheme());
+  const context = useContext(ThemeContext);
 
-  // Apply theme to document when theme changes
-  useEffect(() => {
-    const cssVariables = generateCSSVariables(theme);
-    
-    // Apply CSS variables to document root
-    Object.entries(cssVariables).forEach(([key, value]) => {
-      document.documentElement.style.setProperty(key, value);
-    });
-  }, [theme]);
+  if (!context) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
 
-  // Simplified theme application method
-  const applyTheme = useCallback((newTheme: ThemeConfiguration) => {
-    setTheme(newTheme);
-  }, []);
+  return context;
+}
 
-  return { 
-    theme, 
-    applyTheme 
-  };
+// Utility function to get current theme CSS variables
+export function getCurrentThemeCSSVariables(): Record<string, string> {
+  return generateCSSVariables(createDefaultTheme());
 }

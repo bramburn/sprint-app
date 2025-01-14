@@ -1,0 +1,12 @@
+:root {
+  --vscode-theme-background: var(--vscode-editor-background);
+  --vscode-theme-foreground: var(--vscode-editor-foreground);
+  --vscode-theme-primary: var(--vscode-button-background);
+  --vscode-theme-secondary: var(--vscode-button-foreground);
+  --vscode-theme-accent: var(--vscode-focusBorder);
+}
+
+.themed-component {
+  background-color: var(--vscode-theme-background);
+  color: var(--vscode-theme-foreground);
+}
