@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ReactNode, useMemo } from 'react';
 import { ThemeContext } from './ThemeContext';
-import { Theme, ThemeType } from './ThemeTypes';
+import { Theme } from './ThemeTypes';
 import { loadThemePreference, saveThemePreference } from '../utils/themeStorage';
 import { detectThemeType } from '../utils/themeUtils';
 import { ThemePerformanceMonitor } from '../utils/themePerformance';

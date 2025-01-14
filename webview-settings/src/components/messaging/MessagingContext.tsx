@@ -35,6 +35,7 @@ export function MessagingProvider({ children }: { children: React.ReactNode }) {
 }
 
 // Custom Hook for using Messaging Context
+// eslint-disable-next-line react-refresh/only-export-components
 export function useMessaging() {
   const context = useContext(MessagingContext);
   if (context === undefined) {

@@ -13,12 +13,16 @@ const FieldFormsTab: React.FC = () => {
     email: '',
     department: '',
     files: [] as File[]
-  })
+  });
 
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return emailRegex.test(email) ? null : 'Invalid email format'
-  }
+  // Handler to update formData state
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -42,6 +46,8 @@ const FieldFormsTab: React.FC = () => {
           placeholder="Enter your name"
           variant="outlined"
           name="name"
+          value={formData.name}
+          onChange={handleChange}
         />
         
         <ThemedInput 
@@ -54,6 +60,8 @@ const FieldFormsTab: React.FC = () => {
           }}
           variant="outlined"
           name="email"
+          value={formData.email}
+          onChange={handleChange}
         />
         
         <ThemedSelect 
@@ -61,6 +69,8 @@ const FieldFormsTab: React.FC = () => {
           required={true}
           placeholder="Select Department"
           name="department"
+          value={formData.department}
+          onChange={handleChange}
         >
           {['Engineering', 'Sales', 'Marketing', 'Support'].map((dept) => (
             <option key={dept} value={dept}>{dept}</option>
@@ -74,6 +84,13 @@ const FieldFormsTab: React.FC = () => {
           maxSize={5 * 1024 * 1024} // 5MB
           variant="outlined"
           name="attachments"
+          onChange={(e) => {
+            const files = Array.from(e.target.files || []);
+            setFormData((prevData) => ({
+              ...prevData,
+              files: files,
+            }));
+          }}
         />
         
         <ThemedButton 

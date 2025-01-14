@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 // Mock acquireVsCodeApi globally for testing

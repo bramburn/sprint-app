@@ -7,3 +7,4 @@ dist/
 out/
 coverage/ 
 **/*vite.config.ts
+**/*vitest.config.ts

@@ -85,7 +85,9 @@
     "src/**/*",
     "webview-ui/src/**/*",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+      "vite.config.ts",
+       "vitest.config.ts"
   ],
   "exclude": [
     "node_modules",

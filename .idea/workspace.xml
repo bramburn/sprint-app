@@ -5,8 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5d1db5cd-ca22-47f1-aa50-bfaad409a176" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/shared/src/react/hooks/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/src/theme/context/ThemeContext.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/src/theme/styles/theme.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/src/theme/types/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/src/theme/types/theme.types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/react/hooks/useTheme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/react/hooks/useTheme.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/theme/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/theme/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/extension.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/extension.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webview-sidebar/src/setupTests.ts" beforeDir="false" afterPath="$PROJECT_DIR$/webview-sidebar/src/setupTests.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webview-settings/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/webview-settings/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webview-settings/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/webview-settings/src/main.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +50,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "com.codeium.enabled": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "2025-01-14-temp-fix",
     "last_opened_file_path": "C:/dev/sprint_app/sprint-app",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -69,6 +78,7 @@
       <updated>1736842890997</updated>
       <workItem from="1736842892318" duration="90000" />
       <workItem from="1736843210273" duration="583000" />
+      <workItem from="1736854612067" duration="522000" />
     </task>
     <servers />
   </component>

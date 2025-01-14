@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-import { ThemeConfiguration, defaultTheme } from '../types/theme.types';
+import { ThemeConfiguration, defaultTheme } from '../types';
 
 interface ThemeContextType {
   theme: ThemeConfiguration;
@@ -20,7 +20,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     // Update CSS variables dynamically
     Object.entries(updatedTheme).forEach(([key, value]) => {
-      document.documentElement.style.setProperty(`--vscode-theme-${key}`, value);
+      document.documentElement.style.setProperty(`--vscode-theme-${key}`, value as string);
     });
   };
 

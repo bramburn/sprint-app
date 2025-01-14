@@ -1,4 +1,4 @@
-import { Theme, ThemeType } from '../context/ThemeTypes';
+import { Theme } from '../context/ThemeTypes';
 
 const THEME_STORAGE_KEY = 'vscode-theme-preference';
 
