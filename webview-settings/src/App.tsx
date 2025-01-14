@@ -3,6 +3,7 @@ import { useTheme } from '@sprint-app/shared/react/hooks/useTheme';
 import Header from './components/Header/Header';
 import NavigationPanel, { NavItem } from './components/NavigationPanel/NavigationPanel';
 import ContentPanel, { Setting } from './components/ContentPanel/ContentPanel';
+import ModelSection from './components/ModelSection/ModelSection';
 import styles from './App.module.css';
 
 const App: React.FC = () => {
@@ -38,37 +39,41 @@ const App: React.FC = () => {
   };
 
   // Get content based on active tab
-  const getContent = () => {
+  const renderContent = () => {
     switch (activeTab) {
-      case 'beta':
-        return {
-          title: 'Beta Features',
-          settings: betaSettings,
-        };
-      case 'general':
-        return {
-          title: 'General Settings',
-          settings: [], // Placeholder for general settings
-        };
       case 'models':
-        return {
-          title: 'Model Settings',
-          settings: [], // Placeholder for model settings
-        };
+        return <ModelSection />;
+      case 'beta':
+        return (
+          <ContentPanel
+            title="Beta Features"
+            settings={betaSettings}
+            onToggleSetting={handleToggleSetting}
+          />
+        );
+      case 'general':
+        return (
+          <ContentPanel
+            title="General Settings"
+            settings={[]} // Placeholder for general settings
+          />
+        );
       case 'features':
-        return {
-          title: 'Feature Settings',
-          settings: [], // Placeholder for feature settings
-        };
+        return (
+          <ContentPanel
+            title="Feature Settings"
+            settings={[]} // Placeholder for feature settings
+          />
+        );
       default:
-        return {
-          title: 'Settings',
-          settings: [],
-        };
+        return (
+          <ContentPanel
+            title="Settings"
+            settings={[]}
+          />
+        );
     }
   };
-
-  const content = getContent();
 
   return (
     <div className={styles.appWrapper}>
@@ -79,11 +84,9 @@ const App: React.FC = () => {
           activeTab={activeTab}
           onTabChange={setActiveTab}
         />
-        <ContentPanel
-          title={content.title}
-          settings={content.settings}
-          onToggleSetting={handleToggleSetting}
-        />
+        <div className={styles.contentWrapper}>
+          {renderContent()}
+        </div>
       </div>
     </div>
   );

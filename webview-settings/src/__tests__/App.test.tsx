@@ -45,7 +45,7 @@ describe('App Component', () => {
 
     // Click on Models tab
     fireEvent.click(screen.getByText('Models'));
-    expect(screen.getByText('Model Settings')).toBeInTheDocument();
+    expect(screen.getByText('Model Control Panel')).toBeInTheDocument();
 
     // Click on Features tab
     fireEvent.click(screen.getByText('Features'));
@@ -65,5 +65,13 @@ describe('App Component', () => {
     const bugFinderCheckbox = screen.getByLabelText('Toggle Bug Finder');
     fireEvent.click(bugFinderCheckbox);
     expect(consoleSpy).toHaveBeenCalledWith('Toggled setting: Bug Finder');
+  });
+
+  it('renders ModelSection when Models tab is selected', () => {
+    render(<App />);
+    fireEvent.click(screen.getByText('Models'));
+    
+    expect(screen.getByText('Model Control Panel')).toBeInTheDocument();
+    expect(screen.getByText(/This is a placeholder/)).toBeInTheDocument();
   });
 });
