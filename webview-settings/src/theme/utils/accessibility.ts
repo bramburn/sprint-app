@@ -43,7 +43,8 @@ export function meetsWCAGContrast(color1: string, color2: string, level: 'AA' | 
   return ratio >= thresholds[level].normal;
 }
 
-export function getAccessibleColor(backgroundColor: string, textColor: string): string {
+export function getAccessibleColor(backgroundColor: string, textColor: string=''): string {
+  console.log(textColor);
   const colors = ['#000000', '#FFFFFF'];
   
   const contrastScores = colors.map(color => 

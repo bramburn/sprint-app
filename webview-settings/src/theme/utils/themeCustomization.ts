@@ -1,4 +1,4 @@
-import { Theme, ThemeType } from '../context/ThemeTypes';
+import { Theme } from '../context/ThemeTypes';
 import { safeThemeApplication } from './themeErrorHandler';
 
 export interface ThemeCustomizationOptions {

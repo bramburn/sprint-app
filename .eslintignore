@@ -6,3 +6,4 @@ dist/
 .vscode/
 out/
 coverage/ 
+**/*vite.config.ts
