@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from 'react'
-import { useVSCode } from '@sprint-app/shared/react/hooks/vscode-hooks';
+import React, { useState, useEffect, useCallback } from 'react'
+import { useVSCode, useVSCodeMessaging } from '@sprint-app/shared/react/hooks/vscode-hooks';
+import { MessageCommand } from '@sprint-app/shared/messages/types';
 import DebugTab from './components/DebugTab'
 import Sidebar, { SidebarItem } from './components/Sidebar'
 import { Section } from './components/Section'
@@ -30,6 +31,7 @@ interface AppSettings {
 const App: React.FC = () => {
   const vscode = useVSCode()
   const { theme } = useTheme()
+  const { sendMessage, registerHandler, isReady } = useVSCodeMessaging()
   const [activeTab, setActiveTab] = useState('general')
   const [savedStatus, setSavedStatus] = useState<'saved' | 'saving' | 'error'>('saved')
   const [settings, setSettings] = useState<AppSettings>({
@@ -46,6 +48,48 @@ const App: React.FC = () => {
       includeCursorRules: true
     }
   })
+
+  // Register handler for settings update
+  useEffect(() => {
+    if (!isReady) return;
+
+    registerHandler(MessageCommand.SETTINGS_UPDATE, (message) => {
+      if (message.command === MessageCommand.SETTINGS_UPDATE) {
+        // Update local settings from received message
+        setSettings(prevSettings => ({
+          ...prevSettings,
+          ...message.payload.settings
+        }));
+        setSavedStatus('saved');
+      }
+    });
+  }, [isReady, registerHandler]);
+
+  // Send settings when they change
+  useEffect(() => {
+    if (!isReady) return;
+
+    const settingsRecord: Record<string, unknown> = {
+      account: {
+        email: settings.account.email,
+        accountType: settings.account.accountType
+      },
+      aiRules: {
+        rules: settings.aiRules.rules,
+        includeCursorRules: settings.aiRules.includeCursorRules
+      }
+    };
+
+    sendMessage({
+      command: MessageCommand.SETTINGS_UPDATE,
+      timestamp: Date.now(),
+      id: `settings-${Date.now()}`,
+      payload: {
+        settings: settingsRecord,
+        version: 1
+      }
+    });
+  }, [settings, isReady, sendMessage]);
 
   const sidebarItems: SidebarItem[] = [
     { 
@@ -129,19 +173,31 @@ const App: React.FC = () => {
     }
   }, [vscode])
 
-  const updateSettings = useCallback((updates: Partial<AppSettings>) => {
+  const updateSettings = useCallback((updates: Record<string, unknown>) => {
     setSavedStatus('saving')
     try {
       setSettings(prev => ({
+
         ...prev,
         ...updates
       }))
       
       // Simulate save delay and send to VSCode
       setTimeout(() => {
+        const settingsRecord: Record<string, unknown> = {
+          account: {
+            email: settings.account.email,
+            accountType: settings.account.accountType
+          },
+          aiRules: {
+            rules: settings.aiRules.rules,
+            includeCursorRules: settings.aiRules.includeCursorRules
+          }
+        };
+
         vscode.postMessage({
           command: 'updateSettings',
-          settings: { ...settings, ...updates }
+          settings: settingsRecord
         })
         setSavedStatus('saved')
       }, 500)
@@ -193,7 +249,7 @@ const App: React.FC = () => {
               description="These rules get shown to the AI on all chats and Ctrl-K sessions."
             >
               <div className="p-4 border rounded bg-gray-100">
-                {settings.aiRules.rules.map((rule, index) => (
+                {(settings.aiRules as AIRules).rules.map((rule, index) => (
                   <p key={index}>{rule}</p>
                 ))}
               </div>
@@ -207,7 +263,7 @@ const App: React.FC = () => {
                   type="checkbox" 
                   id="cursorrules" 
                   className="mr-2"
-                  checked={settings.aiRules.includeCursorRules}
+                  checked={(settings.aiRules as AIRules).includeCursorRules}
                   onChange={(e) => updateSettings({
                     aiRules: {
                       ...settings.aiRules,
