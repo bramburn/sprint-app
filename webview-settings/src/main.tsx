@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { ConfigProvider } from '@sprint-app/shared/react/context/config-context'
-import { ThemeProvider } from '@sprint-app/shared/src/theme/context/ThemeContext'
+import { ThemeProvider } from '@sprint-app/shared/react/hooks'
 import { VSCodeProvider } from '@sprint-app/shared/react/context/vscode-context'
 import App from './App'
 

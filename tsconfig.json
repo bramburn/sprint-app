@@ -2,10 +2,7 @@
   "compilerOptions": {
     "target": "ES2022",
     "module": "commonjs",
-    "lib": [
-      "ES2022",
-      "DOM"
-    ],
+    "lib": ["ES2022", "DOM"],
     "declaration": true,
     "outDir": "./dist",
     "strict": true,
@@ -17,63 +14,25 @@
     "baseUrl": ".",
     "resolveJsonModule": true,
     "sourceMap": true,
-    "rootDirs": [
-      "src"
-    ],
+    "rootDirs": ["src"],
     "paths": {
-     
-      "@theme/*": [
-        "shared/src/theme/*"
-      ],
-      "@react/*": [
-        "shared/src/react/*"
-      ],
-      "@webview-settings/*": [
-        "webview-settings/src/*"
-      ],
-      "@webview-sidebar/*": [
-        "webview-sidebar/src/*"
-      ],
-      "@sprint-app/shared/*": [
-        "shared/src/*"
-      ],
-      "@sprint-app/shared": [
-        "shared/src/index"
-      ],
-      "@sprint-app/webview-settings/*": [
-        "webview-settings/src/*"
-      ],
-      "@sprint-app/webview-settings": [
-        "webview-settings/src/index"
-      ],
-      "@sprint-app/webview-sidebar/*": [
-        "webview-sidebar/src/*"
-      ],
-      "@sprint-app/webview-sidebar": [
-        "webview-sidebar/src/index"
-      ],
-      "@webview/*": [
-        "./webview-ui/src/*"
-      ],
-      "@sidebar/*": [
-        "./webview-sidebar/src/*"
-      ],
-      "@extension/*": [
-        "./src/*"
-      ],
-      "@shared/components/*": [
-        "shared/react/components/*"
-      ]
+      "@theme/*": ["shared/src/theme/*"],
+      "@react/*": ["shared/src/react/*"],
+      "@webview-settings/*": ["webview-settings/src/*"],
+      "@webview-sidebar/*": ["webview-sidebar/src/*"],
+      "@sprint-app/shared/*": ["shared/src/*"],
+      "@sprint-app/shared": ["shared/src/index"],
+      "@sprint-app/webview-settings/*": ["webview-settings/src/*"],
+      "@sprint-app/webview-settings": ["webview-settings/src/index"],
+      "@sprint-app/webview-sidebar/*": ["webview-sidebar/src/*"],
+      "@sprint-app/webview-sidebar": ["webview-sidebar/src/index"],
+      "@webview/*": ["./webview-ui/src/*"],
+      "@sidebar/*": ["./webview-sidebar/src/*"],
+      "@extension/*": ["./src/*"],
+      "@shared/components/*": ["shared/react/components/*"]
     },
-    "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules/vscode/vscode.d.ts"
-    ],
-    "types": [
-      "vitest/globals",
-      "node",
-      "vscode"
-    ]
+    "typeRoots": ["./node_modules/@types", "./node_modules/vscode/vscode.d.ts"],
+    "types": ["vitest/globals", "node", "vscode"]
   },
   "files": [],
   "references": [
@@ -86,13 +45,13 @@
     "webview-ui/src/**/*",
     "**/*.ts",
     "**/*.tsx",
-      "vite.config.ts",
-       "vitest.config.ts"
+    "webview-settings/vite.config.ts",
+    "webview-settings/vitest.config.ts",
+    "vite.base.config.ts",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "webview-sidebar/vite.config.ts",
+    "webview-sidebar/vitest.config.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/out",
-    "**/dist"
-  ]
+  "exclude": ["node_modules", "dist", "**/out", "**/dist"]
 }
