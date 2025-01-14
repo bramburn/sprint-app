@@ -1,0 +1,35 @@
+.navigationPanel {
+  width: 250px;
+  height: 100%;
+  border-right: 1px solid var(--vscode-editorGroup-border);
+  background-color: var(--vscode-sideBar-background);
+  padding: 1rem;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--vscode-sideBar-foreground);
+  transition: background-color 0.2s ease;
+}
+
+.navItem:hover {
+  background-color: var(--vscode-list-hoverBackground);
+}
+
+.navItem.active {
+  background-color: var(--vscode-list-activeSelectionBackground);
+  color: var(--vscode-list-activeSelectionForeground);
+}
+
+.navIcon {
+  margin-right: 0.5rem;
+}
+
+.navLabel {
+  font-size: 0.875rem;
+} 

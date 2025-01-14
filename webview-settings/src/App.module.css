@@ -1,0 +1,20 @@
+.appWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--vscode-editor-background);
+  color: var(--vscode-editor-foreground);
+}
+
+.mainLayout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.contentWrapper {
+  flex: 1;
+  overflow-y: auto;
+  background-color: var(--vscode-editor-background);
+  border-left: 1px solid var(--vscode-editorGroup-border);
+} 

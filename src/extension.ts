@@ -73,11 +73,8 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 function handleReadyMessage(message: any, panel: vscode.WebviewPanel) {
-    // Get the current VS Code color theme
-    const currentColorTheme = vscode.window.activeColorTheme;
-    
-    
-    
+    console.log('Ready message received');
+    console.log(message);
 
     // Send initial settings
     panel.webview.postMessage({

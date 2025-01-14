@@ -4,3 +4,8 @@
 we are using vitest for testing, we don't need to set it up again.
 We are using ./shared/ to hold shared data types, interfaces, classes, and functions between the webview and vscode extension. we need to ensure we declare those aliases in tsconfig.
 we are using monorepo for the vscode extesion, we have package.json in the root folder which setups the monorepo with workspaces of ./shared ./webview-settings ./webview-sidebar. The same is done with tsconfig.json. so check the root file for information on aliases setup.
+
+**Rule:** Use `useTheme` within `ThemeProvider` to access theme data (`theme`, `setTheme`, `isDark`, `isHighContrast`). Import from `../theme/hooks/useTheme`. Access theme styles via `theme.colors.propertyName`. Update theme with `setTheme({type: 'light'|'dark'|'high-contrast', colors: theme.colors})`.
+setup test files under __tests__
+
+When trying to repair code from a failed test, undertake the following steps: identify the error, analyse the file and imported file, create a problem statement and find 3 sample (problem statement, and 3 code solution) to repair for this type of error, use that as context for generating and repairing the code. 
