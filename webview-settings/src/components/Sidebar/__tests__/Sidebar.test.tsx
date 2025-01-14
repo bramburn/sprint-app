@@ -1,8 +1,9 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import Sidebar from '../index';
-import { ThemeProvider } from '@sprint-app/shared/react/hooks/useTheme';
+import  Sidebar from '../index';
+import { ThemeContext } from '@sprint-app/shared/react/hooks/useTheme';
+import { createDefaultTheme } from '@sprint-app/shared/theme/types';
 
 // Mock icon component
 const MockIcon = () => <span data-testid="mock-icon">Icon</span>;
@@ -33,13 +34,16 @@ describe('Sidebar Component', () => {
 
   const renderSidebar = (activeTab = 'general') => {
     return render(
-      <ThemeProvider>
+      <ThemeContext.Provider value={{ 
+        theme: createDefaultTheme(), 
+        updateTheme: () => {} 
+      }}>
         <Sidebar 
           items={mockItems} 
           activeTab={activeTab} 
           onTabChange={mockOnTabChange} 
         />
-      </ThemeProvider>
+      </ThemeContext.Provider>
     );
   };
 
@@ -48,7 +52,7 @@ describe('Sidebar Component', () => {
 
     mockItems.forEach(item => {
       expect(screen.getByText(item.label)).toBeInTheDocument();
-      expect(screen.getByTestId('mock-icon')).toBeInTheDocument();
+      expect(screen.getAllByTestId('mock-icon')).toHaveLength(mockItems.length);
     });
   });
 
@@ -77,73 +81,5 @@ describe('Sidebar Component', () => {
 
     const sidebarItems = screen.getAllByRole('menuitem');
     expect(sidebarItems).toHaveLength(mockItems.length);
-  });
-});
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
-import Sidebar from '../index';
-
-describe('Sidebar Component', () => {
-  const mockItems = [
-    { 
-      label: 'General', 
-      id: 'general', 
-      onClick: () => {} 
-    },
-    { 
-      label: 'Models', 
-      id: 'models', 
-      onClick: () => {} 
-    },
-    { 
-      label: 'Features', 
-      id: 'features', 
-      onClick: () => {} 
-    }
-  ];
-
-  const mockOnTabChange = vi.fn();
-
-  it('renders all sidebar items', () => {
-    render(
-      <Sidebar 
-        items={mockItems} 
-        activeTab="general" 
-        onTabChange={mockOnTabChange} 
-      />
-    );
-
-    mockItems.forEach(item => {
-      expect(screen.getByText(item.label)).toBeInTheDocument();
-    });
-  });
-
-  it('highlights active tab', () => {
-    render(
-      <Sidebar 
-        items={mockItems} 
-        activeTab="models" 
-        onTabChange={mockOnTabChange} 
-      />
-    );
-
-    const modelsTab = screen.getByText('Models');
-    expect(modelsTab.closest('li')).toHaveClass('active');
-  });
-
-  it('calls onTabChange when tab is clicked', () => {
-    render(
-      <Sidebar 
-        items={mockItems} 
-        activeTab="general" 
-        onTabChange={mockOnTabChange} 
-      />
-    );
-
-    const featuresTab = screen.getByText('Features');
-    fireEvent.click(featuresTab);
-
-    expect(mockOnTabChange).toHaveBeenCalledWith('features');
   });
 });

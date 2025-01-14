@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useTheme } from '@sprint-app/shared/react/hooks/vscode-hooks';
+import { useTheme } from '@sprint-app/shared/react/hooks/index';
 import SidebarItem from './SidebarItem';
 
 export interface SidebarItem {

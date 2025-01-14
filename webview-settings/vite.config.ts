@@ -9,8 +9,9 @@ export default mergeConfig(baseConfig as UserConfig, defineConfig({
   base: './',
   resolve: {
     alias: {
-      '@shared': path.resolve(__dirname, '../shared'),
-      '@shared/react': path.resolve(__dirname, '../shared/react'),
+      '@shared': path.resolve(__dirname, '../shared/src'),
+      '@shared/react': path.resolve(__dirname, '../shared/src/react'),
+      '@shared/theme': path.resolve(__dirname, '../shared/src/theme'),
       '@shared/dist': path.resolve(__dirname, '../shared/dist'),
       '@webview': path.resolve(__dirname, '../webview-settings/src'),
       '@sidebar': path.resolve(__dirname, '../webview-sidebar/src'),
