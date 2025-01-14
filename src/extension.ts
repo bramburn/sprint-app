@@ -2,10 +2,6 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { MessageCommand } from '@sprint-app/shared/messages/types';
-import { 
-  ThemeConfiguration, 
-  createDefaultTheme 
-} from '@sprint-app/shared/theme/types';
 import * as crypto from 'crypto';
 
 // This method is called when your extension is activated

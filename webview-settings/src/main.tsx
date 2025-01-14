@@ -1,19 +1,25 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
 import { ConfigProvider } from '@sprint-app/shared/react/context/config-context'
+import { ThemeProvider } from '@sprint-app/shared/src/theme/context/ThemeContext'
 import { VSCodeProvider } from '@sprint-app/shared/react/context/vscode-context'
-import { ThemeProvider } from './theme/context/ThemeProvider'
 import App from './App'
-import './theme/styles/theme.css'
+
+// Import global styles
+import '@sprint-app/shared/theme/variables.css'
+import '@sprint-app/shared/theme/styles/theme.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <VSCodeProvider>
-      <ConfigProvider>
-        <ThemeProvider>
-          <App />
-        </ThemeProvider>
-      </ConfigProvider>
+      <ThemeProvider>
+        <ConfigProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ConfigProvider>
+      </ThemeProvider>
     </VSCodeProvider>
   </React.StrictMode>
 )
