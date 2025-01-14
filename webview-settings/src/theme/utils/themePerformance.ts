@@ -34,7 +34,9 @@ export class ThemePerformanceMonitor {
   }
 
   public getThemeChangeStats() {
-    if (this.themeChanges.length === 0) return null;
+    if (this.themeChanges.length === 0) {
+      return null;
+    }
 
     const durations = this.themeChanges.map(change => change.duration);
     return {

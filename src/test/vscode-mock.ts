@@ -26,11 +26,11 @@ export const EventEmitter = class {
                 }
             }
         };
-    }
+    };
 
     fire = (event: any) => {
         this.listeners.forEach(listener => listener(event));
-    }
+    };
 };
 
 export const ExtensionMode = {

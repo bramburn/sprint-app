@@ -53,7 +53,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         ))}
       </nav>
     </ThemedWrapper>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

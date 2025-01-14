@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import './TabContainer.css'
+import React, { useState } from 'react';
+import './TabContainer.css';
 
 export interface TabItem {
   label: string
@@ -12,21 +12,21 @@ export interface TabContainerProps {
 }
 
 const TabContainer: React.FC<TabContainerProps> = ({ tabs }) => {
-  const [activeTabIndex, setActiveTabIndex] = useState(0)
-  const [activeSubTabIndex, setActiveSubTabIndex] = useState<number | null>(null)
+  const [activeTabIndex, setActiveTabIndex] = useState(0);
+  const [activeSubTabIndex, setActiveSubTabIndex] = useState<number | null>(null);
 
   const handleTabChange = (index: number) => {
-    setActiveTabIndex(index)
+    setActiveTabIndex(index);
     // Reset subtab when main tab changes
-    setActiveSubTabIndex(null)
-  }
+    setActiveSubTabIndex(null);
+  };
 
   const handleSubTabChange = (index: number) => {
-    setActiveSubTabIndex(index)
-  }
+    setActiveSubTabIndex(index);
+  };
 
-  const activeTab = tabs[activeTabIndex]
-  const activeSubTabs = activeTab.subTabs
+  const activeTab = tabs[activeTabIndex];
+  const activeSubTabs = activeTab.subTabs;
 
   return (
     <div className="tab-container">
@@ -63,7 +63,7 @@ const TabContainer: React.FC<TabContainerProps> = ({ tabs }) => {
         }
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TabContainer
+export default TabContainer;

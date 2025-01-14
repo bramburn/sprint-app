@@ -1,7 +1,7 @@
 // Global type definitions for shared React components and utilities
 
 declare module '@sprint-app/shared/react/*' {
-  export * from './index'
+  export * from './index';
 }
 
 // Extend window object for VS Code webview communication
@@ -30,4 +30,4 @@ interface WebviewApi<StateType> {
     setState<T extends StateType | undefined>(newState: T): T;
 }
 
-export {}  // Ensure this is a module scope
+export {};  // Ensure this is a module scope

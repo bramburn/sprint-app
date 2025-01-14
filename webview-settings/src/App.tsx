@@ -1,6 +1,6 @@
-import React from 'react'
-import { useTheme } from '@sprint-app/shared/react/hooks/useTheme'
-import { useVSCode } from '@sprint-app/shared/react/hooks/vscode-hooks'
+import React from 'react';
+import { useTheme } from '@sprint-app/shared/react/hooks/useTheme';
+import { useVSCode } from '@sprint-app/shared/react/hooks/vscode-hooks';
 
 const App: React.FC = () => {
   const { theme, updateTheme } = useTheme();

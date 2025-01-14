@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import './Accordion.css'
+import React, { useState } from 'react';
+import './Accordion.css';
 
 export interface AccordionItemProps {
   title: string
@@ -11,11 +11,11 @@ export interface AccordionProps {
 }
 
 const Accordion: React.FC<AccordionProps> = ({ items }) => {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null)
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const toggleAccordion = (index: number) => {
-    setActiveIndex(activeIndex === index ? null : index)
-  }
+    setActiveIndex(activeIndex === index ? null : index);
+  };
 
   return (
     <div className="accordion-container">
@@ -42,7 +42,7 @@ const Accordion: React.FC<AccordionProps> = ({ items }) => {
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default Accordion
+export default Accordion;

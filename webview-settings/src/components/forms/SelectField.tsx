@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import './SelectField.css'
+import React, { useState } from 'react';
+import './SelectField.css';
 
 export interface SelectFieldProps {
   label: string
@@ -16,13 +16,13 @@ const SelectField: React.FC<SelectFieldProps> = ({
   placeholder = 'Select an option',
   onChange
 }) => {
-  const [selectedValue, setSelectedValue] = useState('')
+  const [selectedValue, setSelectedValue] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newValue = e.target.value
-    setSelectedValue(newValue)
-    onChange?.(newValue)
-  }
+    const newValue = e.target.value;
+    setSelectedValue(newValue);
+    onChange?.(newValue);
+  };
 
   return (
     <div className="select-field-container">
@@ -47,7 +47,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
         ))}
       </select>
     </div>
-  )
-}
+  );
+};
 
-export default SelectField
+export default SelectField;

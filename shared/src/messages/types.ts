@@ -95,12 +95,12 @@ export type WebviewMessage =
  * @param message - Message to validate
  */
 export function isValidMessage(message: unknown): message is WebviewMessage {
-  if (!message || typeof message !== 'object') return false;
+  if (!message || typeof message !== 'object') {return false;}
   
   const msg = message as BaseMessage;
   
   // Check for required base message properties
-  if (!msg.command || !msg.timestamp || !msg.id) return false;
+  if (!msg.command || !msg.timestamp || !msg.id) {return false;}
   
   // Validate message based on its command
   switch (msg.command) {

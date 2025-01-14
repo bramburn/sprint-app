@@ -75,7 +75,7 @@ export const useVSCodeMessaging = (): {
       const message = event.data;
       
       // Only process messages from VS Code
-      if (!isValidMessage(message)) return;
+      if (!isValidMessage(message)) {return;}
 
       dispatcher.dispatch(message);
     };

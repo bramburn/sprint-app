@@ -1,10 +1,10 @@
-import React from 'react'
+import React from 'react';
 import { useTheme } from '../theme/hooks/useTheme';
 import { ThemedWrapper } from '../theme/components/ThemedWrapper';
 import { ThemedButton } from '../theme/components/ThemedButton';
-import Accordion from './accordion/Accordion'
-import TabContainer from './tabs/TabContainer'
-import './AccordionTabsTab.css'
+import Accordion from './accordion/Accordion';
+import TabContainer from './tabs/TabContainer';
+import './AccordionTabsTab.css';
 
 export const AccordionTabsTab: React.FC = () => {
   const { theme } = useTheme();
@@ -49,7 +49,7 @@ export const AccordionTabsTab: React.FC = () => {
         </div>
       )
     }
-  ]
+  ];
 
   const tabItems = [
     {
@@ -98,7 +98,7 @@ export const AccordionTabsTab: React.FC = () => {
         </div>
       )
     }
-  ]
+  ];
 
   return (
     <ThemedWrapper 
@@ -126,5 +126,5 @@ export const AccordionTabsTab: React.FC = () => {
         <TabContainer tabs={tabItems} />
       </section>
     </ThemedWrapper>
-  )
-}
+  );
+};

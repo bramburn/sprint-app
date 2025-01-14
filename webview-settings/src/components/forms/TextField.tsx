@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import './TextField.css'
+import React, { useState } from 'react';
+import './TextField.css';
 
 export interface TextFieldProps {
   label: string
@@ -16,18 +16,18 @@ const TextField: React.FC<TextFieldProps> = ({
   required = false,
   validation
 }) => {
-  const [value, setValue] = useState('')
-  const [error, setError] = useState<string | null>(null)
+  const [value, setValue] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value
-    setValue(newValue)
+    const newValue = e.target.value;
+    setValue(newValue);
 
     if (validation) {
-      const validationError = validation(newValue)
-      setError(validationError)
+      const validationError = validation(newValue);
+      setError(validationError);
     }
-  }
+  };
 
   return (
     <div className="text-field-container">
@@ -52,7 +52,7 @@ const TextField: React.FC<TextFieldProps> = ({
         </span>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default TextField
+export default TextField;

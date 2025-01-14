@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 
 interface DebugInfo {
   userAgent: string
@@ -19,7 +19,7 @@ const DebugTab: React.FC = () => {
     browserLanguage: navigator.language,
     colorScheme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'Dark' : 'Light',
     performanceEntries: []
-  })
+  });
 
   const [performanceMetrics, setPerformanceMetrics] = useState<{
     pageLoadTime: number
@@ -27,12 +27,12 @@ const DebugTab: React.FC = () => {
   }>({
     pageLoadTime: 0,
     domContentLoadedTime: 0
-  })
+  });
 
   useEffect(() => {
     // Capture performance metrics
-    const pageLoadTime = performance.now()
-    const domContentLoadedTime = performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart
+    const pageLoadTime = performance.now();
+    const domContentLoadedTime = performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart;
 
     // Collect performance entries
     const performanceEntries = performance.getEntriesByType('measure')
@@ -40,21 +40,21 @@ const DebugTab: React.FC = () => {
         name: entry.name,
         duration: entry.duration,
         startTime: entry.startTime
-      }))
+      }));
 
     setPerformanceMetrics({
       pageLoadTime,
       domContentLoadedTime
-    })
+    });
 
     setDebugInfo(prev => ({
       ...prev,
       performanceEntries
-    }))
+    }));
 
     // Add a custom performance mark
-    performance.mark('debug-tab-loaded')
-  }, [])
+    performance.mark('debug-tab-loaded');
+  }, []);
 
   const renderDebugSection = (title: string, content: React.ReactNode) => (
     <div className="section">
@@ -63,7 +63,7 @@ const DebugTab: React.FC = () => {
         {content}
       </div>
     </div>
-  )
+  );
 
   return (
     <div>
@@ -112,7 +112,7 @@ const DebugTab: React.FC = () => {
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default DebugTab
+export default DebugTab;

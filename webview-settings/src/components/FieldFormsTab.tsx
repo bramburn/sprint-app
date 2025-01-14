@@ -25,10 +25,10 @@ const FieldFormsTab: React.FC = () => {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log('Form submitted:', formData)
+    e.preventDefault();
+    console.log('Form submitted:', formData);
     // Implement form submission logic
-  }
+  };
 
   return (
     <ThemedWrapper 
@@ -101,7 +101,7 @@ const FieldFormsTab: React.FC = () => {
         </ThemedButton>
       </form>
     </ThemedWrapper>
-  )
-}
+  );
+};
 
-export default FieldFormsTab
+export default FieldFormsTab;

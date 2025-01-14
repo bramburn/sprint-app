@@ -14,13 +14,13 @@ const Footer: React.FC<FooterProps> = ({ status, onRetry }) => {
   const getStatusMessage = () => {
     switch (status) {
       case 'saved':
-        return 'Saved ✓'
+        return 'Saved ✓';
       case 'saving':
-        return 'Saving...'
+        return 'Saving...';
       case 'error':
-        return 'Error saving settings'
+        return 'Error saving settings';
     }
-  }
+  };
 
   return (
     <ThemedWrapper 
@@ -51,7 +51,7 @@ const Footer: React.FC<FooterProps> = ({ status, onRetry }) => {
         </ThemedButton>
       </div>
     </ThemedWrapper>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

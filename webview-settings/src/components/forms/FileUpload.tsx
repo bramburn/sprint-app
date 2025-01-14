@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react'
-import './FileUpload.css'
+import React, { useState, useRef } from 'react';
+import './FileUpload.css';
 
 export interface FileUploadProps {
   label: string
@@ -16,42 +16,42 @@ const FileUpload: React.FC<FileUploadProps> = ({
   maxSize = 5 * 1024 * 1024, // 5MB default
   onChange
 }) => {
-  const [files, setFiles] = useState<File[]>([])
-  const [error, setError] = useState<string | null>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [files, setFiles] = useState<File[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = Array.from(e.target.files || [])
+    const selectedFiles = Array.from(e.target.files || []);
     
     // Validate file size
-    const oversizedFiles = selectedFiles.filter(file => file.size > maxSize)
+    const oversizedFiles = selectedFiles.filter(file => file.size > maxSize);
     if (oversizedFiles.length > 0) {
-      setError(`File(s) exceed maximum size of ${maxSize / 1024 / 1024}MB`)
-      return
+      setError(`File(s) exceed maximum size of ${maxSize / 1024 / 1024}MB`);
+      return;
     }
 
-    setFiles(selectedFiles)
-    setError(null)
-    onChange?.(selectedFiles)
-  }
+    setFiles(selectedFiles);
+    setError(null);
+    onChange?.(selectedFiles);
+  };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-  }
+    e.preventDefault();
+    e.stopPropagation();
+  };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
+    e.preventDefault();
+    e.stopPropagation();
     
-    const droppedFiles = Array.from(e.dataTransfer.files)
-    setFiles(droppedFiles)
-    onChange?.(droppedFiles)
-  }
+    const droppedFiles = Array.from(e.dataTransfer.files);
+    setFiles(droppedFiles);
+    onChange?.(droppedFiles);
+  };
 
   const triggerFileInput = () => {
-    fileInputRef.current?.click()
-  }
+    fileInputRef.current?.click();
+  };
 
   return (
     <div className="file-upload-container">
@@ -88,7 +88,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default FileUpload
+export default FileUpload;
