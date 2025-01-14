@@ -1,0 +1,38 @@
+.contentPanel {
+  flex: 1;
+  padding: 1.5rem;
+  background-color: var(--vscode-editor-background);
+  color: var(--vscode-editor-foreground);
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--vscode-editor-foreground);
+}
+
+.settingItem {
+  margin-bottom: 1.5rem;
+}
+
+.settingHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.settingDescription {
+  font-size: 0.875rem;
+  color: var(--vscode-descriptionForeground);
+  margin-bottom: 0.5rem;
+}
+
+.settingInfo {
+  font-size: 0.875rem;
+  color: var(--vscode-descriptionForeground);
+  border-left: 2px dashed var(--vscode-editorGroup-border);
+  padding-left: 0.75rem;
+  margin-left: 0.25rem;
+} 

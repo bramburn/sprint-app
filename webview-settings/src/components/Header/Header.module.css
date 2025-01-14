@@ -1,0 +1,14 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid var(--vscode-editorGroup-border);
+  background-color: var(--vscode-editor-background);
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--vscode-editor-foreground);
+} 
