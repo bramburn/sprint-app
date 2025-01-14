@@ -39,7 +39,12 @@ export const usePersistentState = <T,>(defaultValue: T): [T, (newState: T) => vo
 /**
  * Hook for managing VS Code webview messaging
  */
-export const useVSCodeMessaging = () => {
+export const useVSCodeMessaging = (): {
+  sendMessage: (message: WebviewMessage) => void;
+  registerHandler: (command: MessageCommand, handler: (message: WebviewMessage) => void | Promise<void>) => void;
+  unregisterHandler: (command: MessageCommand, handler: (message: WebviewMessage) => void | Promise<void>) => void;
+  isReady: boolean;
+} => {
   const vscode = useVSCode();
   const [dispatcher] = useState(() => createDefaultDispatcher());
   const [isReady, setIsReady] = useState(false);
@@ -104,9 +109,18 @@ export const useVSCodeMessaging = () => {
     dispatcher.register(command, { handle: handler });
   }, [dispatcher]);
 
+  // Method to unregister message handlers
+  const unregisterHandler = useCallback((
+    command: MessageCommand, 
+    handler: (message: WebviewMessage) => void | Promise<void>
+  ) => {
+    dispatcher.unregister(command, { handle: handler });
+  }, [dispatcher]);
+
   return {
     sendMessage,
     registerHandler,
+    unregisterHandler,
     isReady
   };
 };

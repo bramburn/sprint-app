@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useVSCode, useVSCodeMessaging } from '@sprint-app/shared/react/hooks/vscode-hooks';
+import { useTheme } from '@sprint-app/shared/react/hooks/useTheme';
 import { MessageCommand } from '@sprint-app/shared/messages/types';
 import DebugTab from './components/DebugTab'
 import Sidebar, { SidebarItem } from './components/Sidebar'
@@ -8,9 +9,7 @@ import Footer from './components/Footer'
 import FieldFormsTab from './components/FieldFormsTab'
 import { AccordionTabsTab } from './components/AccordionTabsTab'
 import MessagingTab from './components/messaging/MessagingTab'
-import { ThemeSettings } from './pages/ThemeSettings'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { useTheme } from './theme/hooks/useTheme'
 
 // Define interfaces for our settings
 interface AccountSettings {
@@ -31,7 +30,7 @@ interface AppSettings {
 const App: React.FC = () => {
   const vscode = useVSCode()
   const { theme } = useTheme()
-  const { sendMessage, registerHandler, isReady } = useVSCodeMessaging()
+  const { sendMessage, registerHandler, unregisterHandler, isReady } = useVSCodeMessaging()
   const [activeTab, setActiveTab] = useState('general')
   const [savedStatus, setSavedStatus] = useState<'saved' | 'saving' | 'error'>('saved')
   const [settings, setSettings] = useState<AppSettings>({
@@ -53,17 +52,31 @@ const App: React.FC = () => {
   useEffect(() => {
     if (!isReady) return;
 
-    registerHandler(MessageCommand.SETTINGS_UPDATE, (message) => {
-      if (message.command === MessageCommand.SETTINGS_UPDATE) {
-        // Update local settings from received message
-        setSettings(prevSettings => ({
-          ...prevSettings,
-          ...message.payload.settings
-        }));
-        setSavedStatus('saved');
-      }
+    const settingsUpdateHandler = registerHandler(MessageCommand.SETTINGS_UPDATE, (message) => {
+      // Update local settings from received message
+      setSettings(prevSettings => ({
+        ...prevSettings,
+        ...message.payload.settings
+      }));
+      setSavedStatus('saved');
     });
-  }, [isReady, registerHandler]);
+
+    // Register theme update handler
+    const themeUpdateHandler = registerHandler(MessageCommand.THEME_UPDATE, (message) => {
+      // Theme will be automatically updated by useTheme hook
+      console.log('Theme update received:', message.payload.theme);
+    });
+
+    // Cleanup handlers when component unmounts
+    return () => {
+      if (settingsUpdateHandler) {
+        unregisterHandler(MessageCommand.SETTINGS_UPDATE, settingsUpdateHandler);
+      }
+      if (themeUpdateHandler) {
+        unregisterHandler(MessageCommand.THEME_UPDATE, themeUpdateHandler);
+      }
+    };
+  }, [isReady, registerHandler, unregisterHandler, setSettings]);
 
   // Send settings when they change
   useEffect(() => {
@@ -128,11 +141,6 @@ const App: React.FC = () => {
       onClick: () => setActiveTab('messaging')
     },
     { 
-      label: 'Theme Settings', 
-      id: 'theme',
-      onClick: () => setActiveTab('theme')
-    },
-    { 
       label: 'Debug', 
       id: 'debug',
       onClick: () => setActiveTab('debug')
@@ -177,7 +185,6 @@ const App: React.FC = () => {
     setSavedStatus('saving')
     try {
       setSettings(prev => ({
-
         ...prev,
         ...updates
       }))
@@ -249,7 +256,7 @@ const App: React.FC = () => {
               description="These rules get shown to the AI on all chats and Ctrl-K sessions."
             >
               <div className="p-4 border rounded bg-gray-100">
-                {(settings.aiRules as AIRules).rules.map((rule, index) => (
+                {settings.aiRules.rules.map((rule, index) => (
                   <p key={index}>{rule}</p>
                 ))}
               </div>
@@ -263,7 +270,7 @@ const App: React.FC = () => {
                   type="checkbox" 
                   id="cursorrules" 
                   className="mr-2"
-                  checked={(settings.aiRules as AIRules).includeCursorRules}
+                  checked={settings.aiRules.includeCursorRules}
                   onChange={(e) => updateSettings({
                     aiRules: {
                       ...settings.aiRules,
@@ -290,8 +297,6 @@ const App: React.FC = () => {
         return <Section title="Beta">Beta features coming soon...</Section>
       case 'messaging':
         return <MessagingTab />
-      case 'theme':
-        return <ThemeSettings />
       case 'debug':
         return <DebugTab />
       default:
@@ -306,8 +311,8 @@ const App: React.FC = () => {
         style={{
           display: 'flex',
           height: '100vh',
-          backgroundColor: theme.colors.editorBackground,
-          color: theme.colors.editorForeground
+          backgroundColor: theme.colors.background,
+          color: theme.colors.foreground
         }}
       >
         <Sidebar 
@@ -332,7 +337,6 @@ const App: React.FC = () => {
             <Route path="/features" element={<Section title="Features">Features settings coming soon...</Section>} />
             <Route path="/beta" element={<Section title="Beta">Beta features coming soon...</Section>} />
             <Route path="/messaging" element={<MessagingTab />} />
-            <Route path="/theme" element={<ThemeSettings />} />
             <Route path="/debug" element={<DebugTab />} />
             <Route path="/" element={renderMainContent()} />
           </Routes>

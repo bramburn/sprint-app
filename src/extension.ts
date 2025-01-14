@@ -2,7 +2,13 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { MessageCommand } from '@sprint-app/shared/messages/types';
+import { 
+  ThemeConfiguration, 
+  createDefaultTheme 
+} from '@sprint-app/shared/theme/types';
+import { convertVSCodeThemeToThemeConfig } from '@sprint-app/shared/theme/types';
 import * as crypto from 'crypto';
+
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -11,6 +17,46 @@ export function activate(context: vscode.ExtensionContext) {
 
     // Webview panel management
     let currentPanel: vscode.WebviewPanel | undefined = undefined;
+
+    // Theme tracking
+    let currentTheme: ThemeConfiguration = createDefaultTheme();
+
+    // Update theme based on VS Code's current theme
+    const updateThemeFromVSCode = () => {
+        const workbenchConfig = vscode.workspace.getConfiguration('workbench');
+        const colorTheme = workbenchConfig.get<string>('colorTheme');
+        const colorCustomizations = workbenchConfig.get<Record<string, string>>('colorCustomizations') || {};
+
+        // Convert current VS Code theme to our theme configuration
+        currentTheme = convertVSCodeThemeToThemeConfig({
+            'workbench.colorTheme': colorTheme || '',
+            ...colorCustomizations
+        });
+
+        // If a webview is open, send theme update
+        if (currentPanel) {
+            currentPanel.webview.postMessage({
+                command: MessageCommand.THEME_UPDATE,
+                payload: {
+                    theme: currentTheme,
+                    timestamp: Date.now()
+                }
+            });
+        }
+    };
+
+    // Listen for theme changes
+    context.subscriptions.push(
+        vscode.workspace.onDidChangeConfiguration(event => {
+            if (event.affectsConfiguration('workbench.colorTheme') || 
+                event.affectsConfiguration('workbench.colorCustomizations')) {
+                updateThemeFromVSCode();
+            }
+        })
+    );
+
+    // Initial theme setup
+    updateThemeFromVSCode();
 
     // Command to show settings webview
     const showWebviewCommand = vscode.commands.registerCommand('sprint-ai.showWebview', () => {
@@ -46,6 +92,9 @@ export function activate(context: vscode.ExtensionContext) {
                         case MessageCommand.SETTINGS_UPDATE:
                             handleSettingsUpdate(message, context);
                             break;
+                        case MessageCommand.THEME_UPDATE:
+                            handleThemeUpdate(message);
+                            break;
                         default:
                             console.warn('Unknown message command:', message.command);
                     }
@@ -66,19 +115,43 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     context.subscriptions.push(showWebviewCommand);
+
+    // Listen for theme changes
+    vscode.window.onDidChangeActiveColorTheme((colorTheme) => {
+        const updatedTheme: ThemeConfiguration = convertVSCodeThemeToThemeConfig({
+            background: colorTheme.kind === vscode.ColorThemeKind.Dark ? '#000000' : '#FFFFFF',
+            foreground: colorTheme.kind === vscode.ColorThemeKind.Dark ? '#FFFFFF' : '#000000'
+        });
+
+        // Broadcast theme change to all open webviews
+        // Note: You might need to maintain a list of active panels
+        // This is a simplified example
+        // panels.forEach(panel => {
+        //     panel.webview.postMessage({
+        //         command: MessageCommand.THEME_UPDATE,
+        //         payload: { theme: updatedTheme }
+        //     });
+        // });
+    });
 }
 
 function handleReadyMessage(message: any, panel: vscode.WebviewPanel) {
-    console.log('Webview is ready:', message.payload.webviewId);
+    // Get the current VS Code color theme
+    const currentColorTheme = vscode.window.activeColorTheme;
     
-    // Send initial settings or theme data
+    // Convert VS Code theme to our theme configuration
+    const currentTheme: ThemeConfiguration = convertVSCodeThemeToThemeConfig({
+        background: currentColorTheme.kind === vscode.ColorThemeKind.Dark ? '#000000' : '#FFFFFF',
+        foreground: currentColorTheme.kind === vscode.ColorThemeKind.Dark ? '#FFFFFF' : '#000000'
+    });
+
+    // Send initial settings
     panel.webview.postMessage({
         command: MessageCommand.SETTINGS_UPDATE,
         timestamp: Date.now(),
         id: `initial-settings-${Date.now()}`,
         payload: {
             settings: {
-                // Example initial settings
                 account: {
                     email: 'user@example.com',
                     accountType: 'free'
@@ -94,6 +167,15 @@ function handleReadyMessage(message: any, panel: vscode.WebviewPanel) {
             version: 1
         }
     });
+
+    // Send current theme
+    panel.webview.postMessage({
+        command: MessageCommand.THEME_UPDATE,
+        payload: {
+            theme: currentTheme,
+            timestamp: Date.now()
+        }
+    });
 }
 
 function handleSettingsUpdate(message: any, context: vscode.ExtensionContext) {
@@ -101,6 +183,11 @@ function handleSettingsUpdate(message: any, context: vscode.ExtensionContext) {
     
     // Persist settings using extension context
     context.globalState.update('sprintAISettings', message.payload.settings);
+}
+
+function handleThemeUpdate(message: any) {
+    // Optional: Add any additional theme update logic if needed
+    console.log('Theme update received:', message);
 }
 
 function getWebviewContent(webview: vscode.Webview, context: vscode.ExtensionContext): string {
