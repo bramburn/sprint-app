@@ -55,7 +55,8 @@
 		},
 		"typeRoots": [
 			"./node_modules/@types",
-			"./node_modules/vscode/vscode.d.ts"
+			"./node_modules/vscode/vscode.d.ts",
+			"./global.d.ts"
 		],
 		"types": [
 			"vitest/globals",
