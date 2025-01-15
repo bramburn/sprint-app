@@ -3,12 +3,27 @@
 import * as vscode from 'vscode';
 import { MessageCommand } from '@sprint-app/shared/messages/types';
 import * as crypto from 'crypto';
+import { SidebarProvider } from './SidebarProvider';
+
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-
     console.log('Congratulations, your extension "sprint-ai" is now active!');
+
+    // Register Sidebar Provider
+    const sidebarProvider = new SidebarProvider(context.extensionUri);
+    context.subscriptions.push(
+        vscode.window.registerWebviewViewProvider(
+            "sprint-sidebar-view",
+            sidebarProvider,
+            {
+                webviewOptions: {
+                    retainContextWhenHidden: true
+                }
+            }
+        )
+    );
 
     // Webview panel management
     let currentPanel: vscode.WebviewPanel | undefined = undefined;

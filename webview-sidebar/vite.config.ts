@@ -1,4 +1,4 @@
-import { defineConfig, mergeConfig, UserConfig } from 'vite';
+  import { defineConfig, mergeConfig, UserConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import baseConfig from '../vite.base.config';
 import path from 'path';
@@ -9,17 +9,17 @@ export default mergeConfig(baseConfig as UserConfig, defineConfig({
   base: './',
   resolve: {
     alias: {
-      '@shared': path.resolve(__dirname, '../shared'),
-      '@shared/react': path.resolve(__dirname, '../shared/react'),
-      '@shared/dist': path.resolve(__dirname, '../shared/dist'),
-      '@webview': path.resolve(__dirname, '../webview-settings/src'),
+      '@sprint-app/shared': path.resolve(__dirname, '../shared/src'),
+      '@sprint-app/webview-settings': path.resolve(__dirname, '../webview-settings/src'),
+      '@sprint-app/webview-sidebar': path.resolve(__dirname, '../webview-sidebar/src'),
+      '@webview': path.resolve(__dirname, '../webview-ui/src'),
       '@sidebar': path.resolve(__dirname, '../webview-sidebar/src'),
       '@extension': path.resolve(__dirname, '../src')
     },
     extensions: ['.ts', '.tsx', '.js', '.jsx']
   },
   build: {
-    outDir: '../out/webview-sidebar', 
+    outDir: '../out/webview-sidebar',
     emptyOutDir: true,
     rollupOptions: {
       input: './index.html',
@@ -27,10 +27,7 @@ export default mergeConfig(baseConfig as UserConfig, defineConfig({
         entryFileNames: `[name].js`,
         chunkFileNames: `[name].js`,
         assetFileNames: `[name].[ext]`,
-        manualChunks(id) {
-          if (id.includes('node_modules/react')) return 'react';
-          if (id.includes('node_modules')) return 'vendor';
-        }
+        manualChunks: () => 'everything',
       }
     }
   },

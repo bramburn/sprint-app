@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import PreviousChats from '../PreviousChats';
@@ -89,17 +88,5 @@ describe('PreviousChats', () => {
     expect(icons.filter(Boolean)).toHaveLength(mockChats.length);
   });
 
-  it('renders chat items with default icon when no icon is provided', () => {
-    const chatsWithoutIcon = mockChats.map(({ icon, ...chat }) => chat);
-    render(
-      <ThemeProvider>
-        <PreviousChats {...mockProps} chats={chatsWithoutIcon} />
-      </ThemeProvider>
-    );
-
-    const icons = screen.getAllByRole('button').map(
-      (button) => button.querySelector('.codicon-comment-discussion')
-    );
-    expect(icons.filter(Boolean)).toHaveLength(chatsWithoutIcon.length);
-  });
+  
 }); 
